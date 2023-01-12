@@ -8,6 +8,8 @@ import {
 } from "@mui/material";
 
 const NftCarCard = (props) => {
+  console.log('card',props);
+
   return (
     <Card
       raised={true}
@@ -26,12 +28,27 @@ const NftCarCard = (props) => {
           image={props?.image}
           alt="NftImage"
           loading="lazy"
+          sx={{ backgroundColor: "black", color: "red"}}
         />
         <CardContent
           align="center"
           sx={{ backgroundColor: "black", color: "red" }}
         >
           <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+            
+
+            <Typography
+              gutterBottom
+              variant="body2"
+              component="div"
+              sx={{
+                fontFamily: "Alegreya Sans SC",
+                color: "cyan",
+                fontSize: "1rem",
+              }}
+            >
+              {` ${props?.nft?.metadata.name}`}
+            </Typography>
             <Typography
               gutterBottom
               variant="body2"
@@ -44,29 +61,39 @@ const NftCarCard = (props) => {
             >
               {` NFT # ${props?.id}`}
             </Typography>
-
-            <Typography
+            
+          </Stack>
+          <Stack direction='row' sx={{justifyContent: 'space-between'}}>
+          <Typography
               gutterBottom
               variant="body2"
               component="div"
               sx={{
                 fontFamily: "Alegreya Sans SC",
-                color: "cyan",
-                fontSize: "1.5rem",
-              }}
-            >
-              {` ${props?.nft?.metadata.name}`}
-            </Typography>
-            <Typography
-              gutterBottom
-              variant="body2"
-              component="div"
-              sx={{
-                fontFamily: "Alegreya Sans SC",
-                color: "crimson",
-                fontSize: "1rem",
+                color: "lawngreen",
+                fontSize: ".85rem",
               }}
             >{`Speed:  ${props?.nft?.metadata.speed}`}</Typography>
+            <Typography
+              gutterBottom
+              variant="body2"
+              component="div"
+              sx={{
+                fontFamily: "Alegreya Sans SC",
+                color: "gold",
+                fontSize: ".85rem",
+              }}
+            >{`Acceleration:  ${props?.nft?.metadata.acceleration}`}</Typography>
+            <Typography
+              gutterBottom
+              variant="body2"
+              component="div"
+              sx={{
+                fontFamily: "Alegreya Sans SC",
+                color: "red",
+                fontSize: ".85rem",
+              }}
+            >{`Handling:  ${props?.nft?.metadata.handling}`}</Typography>
           </Stack>
         </CardContent>
       </CardActionArea>

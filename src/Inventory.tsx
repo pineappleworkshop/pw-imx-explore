@@ -41,7 +41,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
 
   async function load(): Promise<void> {
     const inv = await client.getAssets({ user: wallet, sell_orders: true, collection: process.env.REACT_APP_APA_TOKEN_ADDRESS });
-    const invCars = await client.getAssets({ user: wallet, collection: process.env.REACT_APP_SPEEDCAR_TOKEN_ADDRESS });
+    const invCars = await client.getAssets({ user: wallet, sell_orders: true, collection: process.env.REACT_APP_SPEEDCAR_TOKEN_ADDRESS });
     setInventory(inv);
     setSpeedCarInventory(invCars);
     console.log('invCars',invCars);
@@ -199,11 +199,12 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
 
   return (
     <div>
-      <Typography sx={{ fontSize: "2rem", color: "cyan" }}>
-        Your NFTs:
+      <Typography sx={{ fontSize: "2rem", color: "lemonchiffon" }}>
+        Your Cars:
       </Typography>
-      <NftList nfts={inventory.result} />
+      {false && <NftList nfts={inventory.result} />}
       <CarNftList nfts={speedCarInventory.result} />
+      {false && <div>
       <div>
         <Typography sx={{ fontSize: "1rem", color: "cyan" }}>
           Mint NFT:
@@ -307,6 +308,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
         Inventory:
         {JSON.stringify(inventory.result)}
       </div>
+      </div>}
     </div>
   );
 };

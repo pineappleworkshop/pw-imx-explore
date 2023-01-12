@@ -20,11 +20,10 @@
 }
 
 .bg-img {
-  background-image: url(./assets/AlexGreyWP2.jpg);
+  background-image: url(./assets/race-bak.jpg);
   background-color: black;
   min-width: 100%;
-  min-height: 100%;
-  background-size: cover;
+  background-size: 100%;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: top;
 }
