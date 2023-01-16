@@ -4,9 +4,11 @@ import {
   ImmutableXClient,
   ImmutableMethodResults,
   MintableERC721TokenType,
+  ERC721TokenType,
+  LinkParams,
 } from "@imtbl/imx-sdk";
 import { useEffect, useState } from "react";
-import Typography from "@mui/material/Typography";
+import {Typography, Stack, Box, Button, Container} from "@mui/material/";
 import NftList from "./NftList";
 import CarNftList from "./CarNftList";
 require("dotenv").config();
@@ -16,6 +18,7 @@ interface InventoryProps {
   link: Link;
   wallet: string;
 }
+
 
 const Inventory = ({ client, link, wallet }: InventoryProps) => {
   const [inventory, setInventory] =
@@ -34,6 +37,14 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
   const [sellTokenAddress, setSellTokenAddress] = useState("");
   const [sellCancelOrder, setSellCancelOrder] = useState("");
 
+  // transferring NFTs
+  const [transferTokenId, setTransferTokenId] = useState("");
+  const [transferTokenAddress, setTransferTokenAddress] = useState("");
+  const [recipientAddress, setRecipientAddress] = useState("");
+
+
+  const car_token_address: string = process.env.REACT_APP_SPEEDCAR_TOKEN_ADDRESS ?? ""; // contract registered by Immutable
+  
 
   useEffect(() => {
     load();
@@ -41,10 +52,33 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
 
   async function load(): Promise<void> {
     const inv = await client.getAssets({ user: wallet, sell_orders: true, collection: process.env.REACT_APP_APA_TOKEN_ADDRESS });
-    const invCars = await client.getAssets({ user: wallet, sell_orders: true, collection: process.env.REACT_APP_SPEEDCAR_TOKEN_ADDRESS });
-    setInventory(inv);
+    const invCars = await client.getAssets({ user: wallet, sell_orders: true, collection: car_token_address });
+    setInventory(invCars);
     setSpeedCarInventory(invCars);
     console.log('invCars',invCars);
+  }
+
+  // transfer an asset
+  async function transferNFT() {
+    try{
+      // Call the method
+      let result = await link.transfer([
+        {
+          "type": ERC721TokenType.ERC721,
+          "toAddress": recipientAddress,
+          "tokenId": transferTokenId,
+          "tokenAddress": car_token_address
+        }
+    ])
+      // Print the result
+      console.log(result)
+  }catch(error){
+      // Catch and print out the error
+      console.error(error)
+  }
+    
+    setInventory(await client.getAssets({ user: wallet, sell_orders: true , collection: car_token_address}));
+    
   }
 
   // sell an asset
@@ -52,9 +86,11 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
     await link.sell({
       amount: sellAmount,
       tokenId: sellTokenId,
-      tokenAddress: sellTokenAddress,
+      tokenAddress: car_token_address,
     });
-    setInventory(await client.getAssets({ user: wallet, sell_orders: true }));
+    setInventory(await client.getAssets({ user: wallet, sell_orders: true , collection: car_token_address}));
+    setSellAmount('');
+    setSellTokenId('');
   }
 
   // cancel sell order
@@ -62,7 +98,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
     await link.cancel({
       orderId: sellCancelOrder,
     });
-    setInventory(await client.getAssets({ user: wallet, sell_orders: true }));
+    setInventory(await client.getAssets({ user: wallet, sell_orders: true , collection: car_token_address}));
   }
 
   // helper function to generate random ids
@@ -122,7 +158,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       ],
     });
     console.log(`Token minted: ${result.results[0].token_id}`);
-    setInventory(await client.getAssets({ user: wallet, sell_orders: true }));
+    setInventory(await client.getAssets({ user: wallet, sell_orders: true , collection: process.env.REACT_APP_SPEEDCAR_TOKEN_ADDRESS}));
   }
 
   async function mintv2() {
@@ -192,18 +228,72 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       },
     ]);
     console.log(`Token minted: ${result}`);
-    setInventory(await client.getAssets({ user: wallet, sell_orders: true, collection: "0x381BE1c4765AEe02Fc3cC86c700Ab1c4a30fc7c9" }));
+    setInventory(await client.getAssets({ user: wallet, sell_orders: true, collection: speedCarAddress  }));
     
     setSpeedCarInventory(await client.getAssets({ user: wallet, sell_orders: true, collection: speedCarAddress }));
   }
 
   return (
-    <div>
-      <Typography sx={{ fontSize: "2rem", color: "lemonchiffon" }}>
-        Your Cars:
+    <Container>
+      <Stack direction="row" sx={{justifyContent: 'space-between'}}>
+      <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "orangered" }}>
+        Your Garage:
       </Typography>
+      <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "orangered" }}>
+        Cars Owned: {inventory.result?.length}
+      </Typography>
+      </Stack>
       {false && <NftList nfts={inventory.result} />}
       <CarNftList nfts={speedCarInventory.result} />
+      <Stack direction="row" sx={{justifyContent: 'space-between'}}>
+      <Box>
+        <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "1rem", color: "deepskyblue" }}>
+          Transfer Car:
+        </Typography>        
+        <label style={{fontFamily: "Alegreya Sans SC", color: "deepskyblue" }}>
+          Car ID:
+          <input style={{borderRadius:5, maxWidth:100, border: '2px solid deepskyblue'}}
+            type="text"
+            value={transferTokenId}
+            onChange={(e) => setTransferTokenId(e.target.value)}
+          />
+        </label>
+        <label style={{ color: "deepskyblue" }}>
+          To:
+          <input style={{borderRadius:5, maxWidth:100, border: '2px solid deepskyblue'}}
+            type="text"
+            value={recipientAddress}
+            onChange={(e) => setRecipientAddress(e.target.value)}
+          />
+        </label>
+        
+        <Button variant='contained' size='small' onClick={transferNFT} style={{fontFamily: "Alegreya Sans SC", margin:2, borderRadius:5, color: 'black', backgroundColor: 'deepskyblue'}}>Transfer</Button>
+      </Box>
+      <Box>
+        <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "1rem", color: "peachpuff" }}>
+          List Car For Sale:
+        </Typography>        
+        <label style={{fontFamily: "Alegreya Sans SC", color: "peachpuff" }}>
+          Car ID:
+          <input style={{borderRadius:5, maxWidth:100, border: '2px solid peachpuff'}}
+            type="text"
+            value={sellTokenId}
+            onChange={(e) => setSellTokenId(e.target.value)}
+          />
+        </label>
+        <label style={{ color: "peachpuff" }}>
+          Price (ETH):
+          <input style={{borderRadius:5, maxWidth:100, border: '2px solid peachpuff'}}
+            type="text"
+            value={sellAmount}
+            onChange={(e) => setSellAmount(e.target.value)}
+          />
+        </label>
+        
+        <Button variant='contained' size='small' onClick={sellNFT} style={{fontFamily: "Alegreya Sans SC", margin:2, borderRadius:5, color: 'black', backgroundColor: 'peachpuff'}}>List</Button>
+      </Box>
+      
+      </Stack>
       {false && <div>
       <div>
         <Typography sx={{ fontSize: "1rem", color: "cyan" }}>
@@ -253,37 +343,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
         <button onClick={mintv2}>MintV2</button>
       </div>
       <br />
-      <div>
-        <Typography sx={{ fontSize: "1rem", color: "cyan" }}>
-          Sell asset (create sell order):
-        </Typography>
-
-        <label style={{ color: "gold" }}>
-          Amount (ETH):
-          <input
-            type="text"
-            value={sellAmount}
-            onChange={(e) => setSellAmount(e.target.value)}
-          />
-        </label>
-        <label style={{ color: "gold" }}>
-          Token ID:
-          <input
-            type="text"
-            value={sellTokenId}
-            onChange={(e) => setSellTokenId(e.target.value)}
-          />
-        </label>
-        <label style={{ color: "gold" }}>
-          Token Address:
-          <input
-            type="text"
-            value={sellTokenAddress}
-            onChange={(e) => setSellTokenAddress(e.target.value)}
-          />
-        </label>
-        <button onClick={sellNFT}>Sell</button>
-      </div>
+      
       <br />
       <div>
         <Typography sx={{ fontSize: "1rem", color: "cyan" }}>
@@ -309,7 +369,9 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
         {JSON.stringify(inventory.result)}
       </div>
       </div>}
-    </div>
+      
+    <Box sx={{height: '80vh'}}></Box>
+    </Container>
   );
 };
 

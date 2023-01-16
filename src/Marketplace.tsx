@@ -27,12 +27,13 @@ const Marketplace = ({ client, link }: MarketplaceProps) => {
     setMarketplace(
       await client.getOrders({
         status: ImmutableOrderStatus.active,
-        user: "0x42C7eF198f8aC9888E2B1b73e5B71f1D4535194A",
+        sell_token_address: process.env.REACT_APP_SPEEDCAR_TOKEN_ADDRESS,
       })
     );
   }
 
   async function buyHandler(orderId: number) {
+    console.log('orderId',orderId);
     await link.buy({
       orderIds: [orderId.toString()],
     });
@@ -61,6 +62,7 @@ const Marketplace = ({ client, link }: MarketplaceProps) => {
           <NftMarketList
             nfts={JSON.parse(JSON.stringify(marketplace?.result))}
             buy={buyHandler}
+            client
           />
         )}
       </div>

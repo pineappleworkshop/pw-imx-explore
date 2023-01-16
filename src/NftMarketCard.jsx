@@ -7,11 +7,38 @@ import {
   CardMedia,
   Button,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 
 const NftMarketCard = (props) => {
+  const [asset, setAsset] = useState();
+  console.log(props);
   const clickBuyHandler = () => {
     props.buy(Number(props?.nft?.order_id));
   };
+
+  const getAsset = async (
+    tokenAddress,
+    tokenId,
+    includeFees
+  ) => {
+    const response = await props.client.getAsset({
+      tokenAddress,
+      tokenId,
+      includeFees,
+    });
+    return response;
+  };
+  
+
+  useEffect(() => {
+    getAsset(props?.nft?.sell?.data?.token_address, props?.id, true)
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  }, []);
 
   return (
     <Card
@@ -38,31 +65,59 @@ const NftMarketCard = (props) => {
         sx={{ backgroundColor: "black", color: "red" }}
       >
         <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+          <Stack sx={{ justifyContent: "flex-start" }}>          
+            <Typography
+              gutterBottom
+              variant="body2"
+              component="div"
+              align="left"
+              sx={{
+                fontFamily: "Alegreya Sans SC",
+                color: "magenta",
+                fontSize: "1rem",
+              }}
+            >
+              {`${props?.nft.sell.data.properties.collection.name} #${props?.id}`}
+            </Typography>
+            <Typography
+              gutterBottom
+              variant="body2"
+              component="div"
+              align="left"
+              sx={{
+                fontFamily: "Alegreya Sans SC",
+                color: "cyan",
+                fontSize: "1rem",
+              }}
+            >
+              {` ${props?.name}`}
+            </Typography>
+            <Typography
+              gutterBottom
+              variant="body2"
+              component="div"
+              align="left"
+              sx={{
+                fontFamily: "Alegreya Sans SC",
+                color: "cyan",
+                fontSize: ".8rem",
+              }}
+            >{`Order:  ${props?.nft.order_id}`}</Typography>
+          </Stack>
+          <Stack>
           <Typography
-            gutterBottom
-            variant="body2"
-            component="div"
-            sx={{
-              fontFamily: "Alegreya Sans SC",
-              color: "magenta",
-              fontSize: "1rem",
-            }}
-          >
-            {`${props?.nft.sell.data.properties.collection.name} #${props?.id}`}
-          </Typography>
-
-          <Typography
-            gutterBottom
-            variant="body2"
-            component="div"
-            sx={{
-              fontFamily: "Alegreya Sans SC",
-              color: "cyan",
-              fontSize: "1rem",
-            }}
-          >
-            {` ${props?.name}`}
-          </Typography>
+              gutterBottom
+              variant="body2"
+              component="div"
+              align="left"
+              sx={{
+                fontFamily: "Alegreya Sans SC",
+                color: "cyan",
+                fontSize: ".8rem",
+              }}
+            >{`Speed:  ${props?.nft.sell.data.properties.speed}`}</Typography>
+          </Stack>
+          <Stack>
           <Typography
             gutterBottom
             variant="body2"
@@ -70,29 +125,16 @@ const NftMarketCard = (props) => {
             sx={{
               fontFamily: "Alegreya Sans SC",
               color: "palegreen",
-              fontSize: "1rem",
+              fontSize: "1.2rem",
             }}
-          >{`Price:  ${
-            props?.nft.buy.data.quantity_with_fees / 1e18
-          } ETH`}</Typography>
-        </Stack>
-        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-          <Typography
-            gutterBottom
-            variant="body2"
-            component="div"
-            sx={{
-              fontFamily: "Alegreya Sans SC",
-              color: "cyan",
-              fontSize: ".9rem",
-            }}
-          >{`OrderId:  ${props?.nft.order_id}`}</Typography>
+          >{`${props?.nft.buy.data.quantity_with_fees / 1e18} ETH`}
+          </Typography>
           <Button
             variant="contained"
             size="small"
             sx={{
               fontFamily: "Alegreya Sans SC",
-              fontSize: ".8rem",
+              fontSize: "1rem",
               color: "black",
               backgroundColor: "cyan",
             }}
@@ -101,7 +143,12 @@ const NftMarketCard = (props) => {
           >
             BUY
           </Button>
+          </Stack>          
+          
         </Stack>
+        
+          
+        
       </CardContent>
     </Card>
   );

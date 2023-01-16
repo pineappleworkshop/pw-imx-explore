@@ -63,9 +63,9 @@ const App = () => {
         component="div"
         sx={{ fontFamily: "Roboto", color: "cyan", fontSize: "2rem" }}
       >
-        ImmutableX NFTs
+        Rocket Car Garage
       </Typography>
-      <button onClick={linkSetup}>Setup</button>
+      <button onClick={linkSetup}>Connect</button>
       <Typography
         gutterBottom
         variant="body2"

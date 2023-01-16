@@ -16,7 +16,6 @@ const CarNftList = (props) => {
         ))}
       </ImageList>
     </Box>
-    <Box sx={{height: '100px'}}></Box>
     </Container>
   );
 };

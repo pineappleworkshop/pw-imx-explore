@@ -5,6 +5,7 @@ import {
   CardContent,
   CardActionArea,
   CardMedia,
+  Box
 } from "@mui/material";
 
 const NftCarCard = (props) => {
@@ -24,7 +25,7 @@ const NftCarCard = (props) => {
       <CardActionArea>
         <CardMedia
           component="img"
-          height="240"
+          height="210"
           image={props?.image}
           alt="NftImage"
           loading="lazy"
@@ -35,6 +36,9 @@ const NftCarCard = (props) => {
           sx={{ backgroundColor: "black", color: "red" }}
         >
           <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+            <Box >
+              <img src={props?.nft?.collection.icon_url} style={{ borderRadius: 10 }}/>
+            </Box>
             
 
             <Typography
@@ -59,7 +63,7 @@ const NftCarCard = (props) => {
                 fontSize: "1rem",
               }}
             >
-              {` NFT # ${props?.id}`}
+              {` Car # ${props?.id}`}
             </Typography>
             
           </Stack>
