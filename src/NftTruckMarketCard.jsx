@@ -105,17 +105,7 @@ const NftMarketCard = (props) => {
             >{`Order:  ${props?.nft.order_id}`}</Typography>
           </Stack>
           <Stack>
-          {/* <Typography
-              gutterBottom
-              variant="body2"
-              component="div"
-              align="left"
-              sx={{
-                fontFamily: "Alegreya Sans SC",
-                color: "cyan",
-                fontSize: ".8rem",
-              }}
-            >{`Speed:  ${props?.nft.sell.data.properties.speed}`}</Typography> */}
+         
           </Stack>
           <Stack>
           <Typography
@@ -124,7 +114,7 @@ const NftMarketCard = (props) => {
             component="div"
             sx={{
               fontFamily: "Alegreya Sans SC",
-              color: "gold",
+              color: "cyan",
               fontSize: "1.2rem",
             }}
           >{`${props?.nft.buy.data.quantity_with_fees / 1e18} ETH`}

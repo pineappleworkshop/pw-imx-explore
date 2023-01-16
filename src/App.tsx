@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Marketplace from "./Marketplace";
 import Inventory from "./Inventory";
 import Bridging from "./Bridging";
+import Racetrack from "./Racetrack";
 require("dotenv").config();
 
 const App = () => {
@@ -45,6 +46,9 @@ const App = () => {
         case "inventory":
           if (wallet === "undefined") return <div>Connect wallet</div>;
           return <Inventory client={client} link={link} wallet={wallet} />;
+          case "racetrack":
+          if (wallet === "undefined") return <div>Connect wallet</div>;
+          return <Racetrack client={client} link={link} wallet={wallet} />;
         case "bridging":
           if (wallet === "undefined") return <div>Connect wallet</div>;
           return <Bridging client={client} link={link} wallet={wallet} />;
@@ -87,6 +91,7 @@ const App = () => {
       <button onClick={() => setTab("marketplace")}>Marketplace</button>
       <button onClick={() => setTab("inventory")}>Inventory</button>
       <button onClick={() => setTab("bridging")}>Deposit and withdrawal</button>
+      <button onClick={() => setTab("racetrack")}>Race Track</button>
       <br />
       <br />
       <br />

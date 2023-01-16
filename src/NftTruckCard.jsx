@@ -8,7 +8,7 @@ import {
   Box
 } from "@mui/material";
 
-const NftCarCard = (props) => {
+const NftTruckCard = (props) => {
   console.log('card',props);
 
   return (
@@ -63,7 +63,7 @@ const NftCarCard = (props) => {
                 fontSize: "1rem",
               }}
             >
-              {` Car # ${props?.id}`}
+              {`Truck # ${props?.id}`}
             </Typography>
             
           </Stack>
@@ -77,7 +77,7 @@ const NftCarCard = (props) => {
                 color: "lawngreen",
                 fontSize: ".85rem",
               }}
-            >{`Speed:  ${props?.nft?.metadata.speed}`}</Typography>
+            >{`Attack:  ${props?.nft?.metadata.attack}`}</Typography>
             <Typography
               gutterBottom
               variant="body2"
@@ -87,7 +87,7 @@ const NftCarCard = (props) => {
                 color: "gold",
                 fontSize: ".85rem",
               }}
-            >{`Acceleration:  ${props?.nft?.metadata.acceleration}`}</Typography>
+            >{`Crush:  ${props?.nft?.metadata.crush}`}</Typography>
             <Typography
               gutterBottom
               variant="body2"
@@ -97,7 +97,7 @@ const NftCarCard = (props) => {
                 color: "red",
                 fontSize: ".85rem",
               }}
-            >{`Handling:  ${props?.nft?.metadata.handling}`}</Typography>
+            >{`Bounce:  ${props?.nft?.metadata.bounce}`}</Typography>
           </Stack>
         </CardContent>
       </CardActionArea>
@@ -105,4 +105,4 @@ const NftCarCard = (props) => {
   );
 };
 
-export default NftCarCard;
+export default NftTruckCard;

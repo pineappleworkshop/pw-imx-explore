@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 import {Typography, Stack, Box, Button, Container} from "@mui/material/";
 import NftList from "./NftList";
 import CarNftList from "./CarNftList";
+import NftTruckList from "./NftTruckList";
+import NftTireList from "./NftTireList";
 require("dotenv").config();
 
 interface InventoryProps {
@@ -23,7 +25,9 @@ interface InventoryProps {
 const Inventory = ({ client, link, wallet }: InventoryProps) => {
   const [inventory, setInventory] =
     useState<ImmutableMethodResults.ImmutableGetAssetsResult>(Object);
-  const [speedCarInventory, setSpeedCarInventory] =
+  const [monsterTruckInventory, setMonsterTruckInventory] =
+    useState<ImmutableMethodResults.ImmutableGetAssetsResult>(Object);
+  const [tireInventory, setTireInventory] =
     useState<ImmutableMethodResults.ImmutableGetAssetsResult>(Object);
     // minting
   const [mintTokenId, setMintTokenId] = useState("");
@@ -44,6 +48,8 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
 
 
   const car_token_address: string = process.env.REACT_APP_SPEEDCAR_TOKEN_ADDRESS ?? ""; // contract registered by Immutable
+  const truck_token_address: string = process.env.REACT_APP_MONSTERTRUCK_TOKEN_ADDRESS ?? ""; // contract registered by Immutable
+  const tire_token_address: string = process.env.REACT_APP_TRUCKTIRE_TOKEN_ADDRESS ?? ""; // contract registered by Immutable
   
 
   useEffect(() => {
@@ -51,15 +57,17 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
   }, []);
 
   async function load(): Promise<void> {
-    const inv = await client.getAssets({ user: wallet, sell_orders: true, collection: process.env.REACT_APP_APA_TOKEN_ADDRESS });
+    const invTires = await client.getAssets({ user: wallet, sell_orders: true, collection: tire_token_address});
+    const invTrucks = await client.getAssets({ user: wallet, sell_orders: true, collection: truck_token_address });
     const invCars = await client.getAssets({ user: wallet, sell_orders: true, collection: car_token_address });
     setInventory(invCars);
-    setSpeedCarInventory(invCars);
+    setMonsterTruckInventory(invTrucks);
+    setTireInventory(invTires);
     console.log('invCars',invCars);
   }
 
   // transfer an asset
-  async function transferNFT() {
+  async function transferCar() {
     try{
       // Call the method
       let result = await link.transfer([
@@ -78,17 +86,49 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
   }
     
     setInventory(await client.getAssets({ user: wallet, sell_orders: true , collection: car_token_address}));
-    
+    setRecipientAddress('');
+    setTransferTokenId('');
+  }
+
+  async function transferTruck() {
+    try{
+      // Call the method
+      let result = await link.transfer([
+        {
+          "type": ERC721TokenType.ERC721,
+          "toAddress": recipientAddress,
+          "tokenId": transferTokenId,
+          "tokenAddress": truck_token_address
+        }
+    ])
+      // Print the result
+      console.log(result)
+  }catch(error){
+      // Catch and print out the error
+      console.error(error)
+  }    
+    setMonsterTruckInventory(await client.getAssets({ user: wallet, sell_orders: true , collection: truck_token_address}));
   }
 
   // sell an asset
-  async function sellNFT() {
+  async function sellCar() {
     await link.sell({
       amount: sellAmount,
       tokenId: sellTokenId,
       tokenAddress: car_token_address,
     });
     setInventory(await client.getAssets({ user: wallet, sell_orders: true , collection: car_token_address}));
+    setSellAmount('');
+    setSellTokenId('');
+  }
+
+  async function sellTruck() {
+    await link.sell({
+      amount: sellAmount,
+      tokenId: sellTokenId,
+      tokenAddress: truck_token_address,
+    });
+    setMonsterTruckInventory(await client.getAssets({ user: wallet, sell_orders: true , collection: truck_token_address}));
     setSellAmount('');
     setSellTokenId('');
   }
@@ -230,8 +270,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
     console.log(`Token minted: ${result}`);
     setInventory(await client.getAssets({ user: wallet, sell_orders: true, collection: speedCarAddress  }));
     
-    setSpeedCarInventory(await client.getAssets({ user: wallet, sell_orders: true, collection: speedCarAddress }));
-  }
+    }
 
   return (
     <Container>
@@ -242,9 +281,15 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "orangered" }}>
         Cars Owned: {inventory.result?.length}
       </Typography>
+      <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "orangered" }}>
+        Trucks Owned: {monsterTruckInventory.result?.length}
+      </Typography>
+      <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "orangered" }}>
+        Tires Owned: {tireInventory.result?.length}
+      </Typography>
       </Stack>
       {false && <NftList nfts={inventory.result} />}
-      <CarNftList nfts={speedCarInventory.result} />
+      <CarNftList nfts={inventory.result} />
       <Stack direction="row" sx={{justifyContent: 'space-between'}}>
       <Box>
         <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "1rem", color: "deepskyblue" }}>
@@ -267,7 +312,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
           />
         </label>
         
-        <Button variant='contained' size='small' onClick={transferNFT} style={{fontFamily: "Alegreya Sans SC", margin:2, borderRadius:5, color: 'black', backgroundColor: 'deepskyblue'}}>Transfer</Button>
+        <Button variant='contained' size='small' onClick={transferCar} style={{fontFamily: "Alegreya Sans SC", margin:2, borderRadius:5, color: 'black', backgroundColor: 'deepskyblue'}}>Transfer</Button>
       </Box>
       <Box>
         <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "1rem", color: "peachpuff" }}>
@@ -290,10 +335,67 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
           />
         </label>
         
-        <Button variant='contained' size='small' onClick={sellNFT} style={{fontFamily: "Alegreya Sans SC", margin:2, borderRadius:5, color: 'black', backgroundColor: 'peachpuff'}}>List</Button>
+        <Button variant='contained' size='small' onClick={sellCar} style={{fontFamily: "Alegreya Sans SC", margin:2, borderRadius:5, color: 'black', backgroundColor: 'peachpuff'}}>List</Button>
       </Box>
       
       </Stack>
+      {monsterTruckInventory.result?.length > 0 && <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "orangered" }}>
+        Your Monster Trucks:
+      </Typography>}
+      {monsterTruckInventory.result?.length > 0 && <NftTruckList nfts={monsterTruckInventory.result} />}
+      {monsterTruckInventory.result?.length > 0 && <Stack direction="row" sx={{justifyContent: 'space-between'}}>
+      <Box>
+        <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "1rem", color: "deepskyblue" }}>
+          Transfer Monster Truck:
+        </Typography>        
+        <label style={{fontFamily: "Alegreya Sans SC", color: "deepskyblue" }}>
+          Truck ID:
+          <input style={{borderRadius:5, maxWidth:100, border: '2px solid deepskyblue'}}
+            type="text"
+            value={transferTokenId}
+            onChange={(e) => setTransferTokenId(e.target.value)}
+          />
+        </label>
+        <label style={{ color: "deepskyblue" }}>
+          To:
+          <input style={{borderRadius:5, maxWidth:100, border: '2px solid deepskyblue'}}
+            type="text"
+            value={recipientAddress}
+            onChange={(e) => setRecipientAddress(e.target.value)}
+          />
+        </label>
+        
+        <Button variant='contained' size='small' onClick={transferTruck} style={{fontFamily: "Alegreya Sans SC", margin:2, borderRadius:5, color: 'black', backgroundColor: 'deepskyblue'}}>Transfer</Button>
+      </Box>
+      <Box>
+        <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "1rem", color: "peachpuff" }}>
+          List Monster Truck For Sale:
+        </Typography>        
+        <label style={{fontFamily: "Alegreya Sans SC", color: "peachpuff" }}>
+          Truck ID:
+          <input style={{borderRadius:5, maxWidth:100, border: '2px solid peachpuff'}}
+            type="text"
+            value={sellTokenId}
+            onChange={(e) => setSellTokenId(e.target.value)}
+          />
+        </label>
+        <label style={{ color: "peachpuff" }}>
+          Price (ETH):
+          <input style={{borderRadius:5, maxWidth:100, border: '2px solid peachpuff'}}
+            type="text"
+            value={sellAmount}
+            onChange={(e) => setSellAmount(e.target.value)}
+          />
+        </label>
+        
+        <Button variant='contained' size='small' onClick={sellTruck} style={{fontFamily: "Alegreya Sans SC", margin:2, borderRadius:5, color: 'black', backgroundColor: 'peachpuff'}}>List</Button>
+      </Box>
+      
+      </Stack>}
+      {tireInventory.result?.length > 0 && <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "orangered" }}>
+        Your Monster Tires:
+      </Typography>}
+      {tireInventory.result?.length > 0 && <NftTireList nfts={tireInventory.result} />}
       {false && <div>
       <div>
         <Typography sx={{ fontSize: "1rem", color: "cyan" }}>

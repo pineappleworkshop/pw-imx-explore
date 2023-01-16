@@ -5,15 +5,16 @@ import {
   CardContent,
   CardActionArea,
   CardMedia,
+  Box
 } from "@mui/material";
 
-const NftCard = (props) => {
+const NftTireCard = (props) => {
   return (
     <Card
       raised={true}
       sx={{
         borderRadius: 6,
-        maxWidth: 345,
+        maxWidth: 250,
         borderColor: "white",
         boxShadow: "0 0 5px 5px red",
         borderWidth: 2,
@@ -22,28 +23,21 @@ const NftCard = (props) => {
       <CardActionArea>
         <CardMedia
           component="img"
-          height="240"
+          height="250"
           image={props?.image}
           alt="NftImage"
           loading="lazy"
+          sx={{ backgroundColor: "black", color: "red"}}
         />
         <CardContent
           align="center"
           sx={{ backgroundColor: "black", color: "red" }}
         >
           <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-            <Typography
-              gutterBottom
-              variant="body2"
-              component="div"
-              sx={{
-                fontFamily: "Alegreya Sans SC",
-                color: "deepskyblue",
-                fontSize: "1rem",
-              }}
-            >
-              {` NFT # ${props?.id}`}
-            </Typography>
+            <Box >
+              <img src={props?.nft?.collection.icon_url} style={{ borderRadius: 10 }}/>
+            </Box>
+            
 
             <Typography
               gutterBottom
@@ -52,26 +46,18 @@ const NftCard = (props) => {
               sx={{
                 fontFamily: "Alegreya Sans SC",
                 color: "cyan",
-                fontSize: "1.5rem",
+                fontSize: "1.1rem",
               }}
             >
               {` ${props?.nft?.metadata.name}`}
             </Typography>
-            <Typography
-              gutterBottom
-              variant="body2"
-              component="div"
-              sx={{
-                fontFamily: "Alegreya Sans SC",
-                color: "crimson",
-                fontSize: "1rem",
-              }}
-            >{`Attack:  ${props?.nft?.metadata.attack}`}</Typography>
+            
           </Stack>
+          
         </CardContent>
       </CardActionArea>
     </Card>
   );
 };
 
-export default NftCard;
+export default NftTireCard;
