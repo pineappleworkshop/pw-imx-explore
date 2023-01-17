@@ -1,14 +1,16 @@
 # Immutable X integration example
 Racing game:
--Buy a car from Marketplace
--Goto 'Race Track' and race your car. 
--you automatically win the race!
--Goto Your Garage and see your newly won Monster Tire
--When you have 4 Monster Tires:
---you can send your Car + 4 Monster Tires to the 'Chop Shop'
---mint a Monster Truck NFT
+- Buy a car from Marketplace
+- Goto 'Race Track' and race your car.
+- you automatically win the race!
+- Goto Your Garage and see your newly won Monster Tire
+- When you have 4 Monster Tires:
+- - Send your Race Car + 4 Monster Tires to the 'Chop Shop'
+- - to Mint a Monster Truck NFT
 
-## Available Scripts
+this repo uses node version 16, best to switch to this version using nvm:
+
+`nvm use 16`
 
 In the project directory, you can run:
 
