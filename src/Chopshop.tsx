@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import {Typography, Stack, Box, Button, Container} from "@mui/material/";
 import CarNftList from "./CarNftList";
 import NftCarCard from "./NftCarCard";
+import NftTireList from "./NftTireList";
 require("dotenv").config();
 
 interface InventoryProps {
@@ -113,7 +114,7 @@ const Chopshop = ({ client, wallet }: InventoryProps) => {
     if(isCarSelected && ownedTires.length >= 4){
       try{
         // Call the method
-        let result = await link.batchNftTransfer([
+        let result = await link.transfer([
           {
                 "type": ERC721TokenType.ERC721,
                 "toAddress": burn_mock_address,
@@ -147,13 +148,14 @@ const Chopshop = ({ client, wallet }: InventoryProps) => {
         ])
           // Print the result
           console.log('batch',result)
+          //then mint truck
+          mintv2();
       }catch(error){
           // Catch and print out the error
           console.error(error)
       }
     }
-    //then mint truck
-   mintv2();
+    
   }
 
   async function mintv2() {
@@ -236,10 +238,10 @@ const Chopshop = ({ client, wallet }: InventoryProps) => {
         Build a Monster Truck from your Race Car and 4 Monster Truck Tires
       </Typography>
       <Stack direction="row" sx={{justifyContent: 'space-around'}}>
-      {!isCarSelected  && <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "red" }}>
+      {!isCarSelected  && <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "cyan" }}>
           Choose Race Car:
         </Typography>      }  
-        {isCarSelected  &&<Button
+        {tireInventory?.result?.length > 3 && isCarSelected  &&<Button
               variant="contained"
               size="large"
               sx={{
@@ -252,11 +254,16 @@ const Chopshop = ({ client, wallet }: InventoryProps) => {
             >
               Build a Monster Truck
             </Button>  }        
-            
+            {tireInventory?.result?.length < 4 && <Typography sx={{ fontFamily: "Alegreya Sans SC",fontSize: "2rem", color: "red" }}>
+              !You Need 4 Monster Tires!
+            </Typography>   } 
       </Stack>      
       {!isCarSelected && <CarNftList nfts={inventory?.result} onSelect={carSelectedHandler} />   } 
       {isCarSelected  && <NftCarCard id={carSelected?.token_id} image={carSelected?.image_url} nft={carSelected} onSelect={carSelectedHandler} />   } 
-      
+      <Typography sx={{ fontFamily: "Alegreya Sans SC",fontSize: "2rem", color: "cyan" }}>
+        Your Monster Tires:
+      </Typography>
+      {tireInventory?.result?.length > 0 && <NftTireList nfts={tireInventory?.result} />}
       
     <Box sx={{height: '80vh'}}></Box>
     </Container>

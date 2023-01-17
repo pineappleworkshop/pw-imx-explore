@@ -1,6 +1,6 @@
 import "./App.css";
 import { Link, ImmutableXClient, ImmutableMethodResults } from "@imtbl/imx-sdk";
-import { Typography } from "@mui/material/";
+import { Typography, Stack, Button } from "@mui/material/";
 import { useEffect, useState } from "react";
 import Marketplace from "./Marketplace";
 import Inventory from "./Inventory";
@@ -53,9 +53,9 @@ const App = () => {
         case "chopshop":
           if (wallet === "undefined") return <div>Connect wallet</div>;
           return <Chopshop client={client} link={link} wallet={wallet} />;
-        case "bridging":
-          if (wallet === "undefined") return <div>Connect wallet</div>;
-          return <Bridging client={client} link={link} wallet={wallet} />;
+        // case "bridging":
+        //   if (wallet === "undefined") return <div>Connect wallet</div>;
+        //   return <Bridging client={client} link={link} wallet={wallet} />;
         default:
           return <Marketplace client={client} link={link} />;
       }
@@ -65,20 +65,61 @@ const App = () => {
 
   return (
     <div className="App bg-img">
+      <Stack direction='row' sx={{p: 5,justifyContent: 'space-around'}}>
+      <Stack maxWidth={1/10}>
+      <Button variant='contained' size="small"
+            sx={{
+              fontFamily: "Alegreya Sans SC",
+              fontSize: "1rem",
+              color: "black",
+              backgroundColor: "cyan",
+            }} onClick={() => setTab("marketplace")}>Marketplace</Button>
+      <Button variant='contained' size="small"
+            sx={{
+              fontFamily: "Alegreya Sans SC",
+              fontSize: "1rem",
+              color: "black",
+              backgroundColor: "cyan",
+            }}  onClick={() => setTab("inventory")}>Inventory</Button>
+      {/* <button onClick={() => setTab("bridging")}>Deposit and withdrawal</button> */}
+      <Button variant='contained' size="small"
+            sx={{
+              fontFamily: "Alegreya Sans SC",
+              fontSize: "1rem",
+              color: "black",
+              backgroundColor: "cyan",
+            }} onClick={() => setTab("racetrack")}>Race Track</Button>
+      <Button variant='contained' size="small"
+            sx={{
+              fontFamily: "Alegreya Sans SC",
+              fontSize: "1rem",
+              color: "black",
+              backgroundColor: "cyan",
+            }} onClick={() => setTab("chopshop")}>Chop Shop</Button>
+      </Stack>
       <Typography
         gutterBottom
         variant="h1"
         component="div"
-        sx={{ fontFamily: "Roboto", color: "cyan", fontSize: "2rem" }}
+        align="center"
+        sx={{ fontFamily: "Alegreya Sans SC", color: "red", fontSize: "5rem" }}
       >
         Rocket Car Garage
       </Typography>
-      <button onClick={linkSetup}>Connect</button>
+      <Button variant='contained' size="small"
+            sx={{
+              fontFamily: "Alegreya Sans SC",
+              fontSize: "1rem",
+              color: "black",
+              backgroundColor: "cyan",
+            }} onClick={linkSetup}>Connect</Button>
+            </Stack>
       <Typography
         gutterBottom
         variant="body2"
         component="div"
-        sx={{ fontFamily: "Roboto", color: "cyan", fontSize: ".75rem" }}
+        align='center'
+        sx={{ fontFamily: "Alegreya Sans SC", color: "cyan", fontSize: ".75rem" }}
       >
         {` Active wallet: ${wallet}`}
       </Typography>
@@ -86,17 +127,15 @@ const App = () => {
         gutterBottom
         variant="body2"
         component="div"
-        sx={{ fontFamily: "Roboto", color: "cyan", fontSize: ".75rem" }}
+        align='center'
+        sx={{ fontFamily: "Alegreya Sans SC", color: "cyan", fontSize: ".75rem" }}
       >
         ETH balance (in wei): {balance?.balance?.toString()}
       </Typography>
+      
       {/* <div>Active wallet: {wallet}</div>
       <div>ETH balance (in wei): {balance?.balance?.toString()}</div> */}
-      <button onClick={() => setTab("marketplace")}>Marketplace</button>
-      <button onClick={() => setTab("inventory")}>Inventory</button>
-      <button onClick={() => setTab("bridging")}>Deposit and withdrawal</button>
-      <button onClick={() => setTab("racetrack")}>Race Track</button>
-      <button onClick={() => setTab("chopshop")}>Chop Shop</button>
+      
       <br />
       <br />
       <br />

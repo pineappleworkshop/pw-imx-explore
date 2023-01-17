@@ -51,7 +51,18 @@ const NftTireCard = (props) => {
             >
               {` ${props?.nft?.metadata?.name}`}
             </Typography>
-            
+            <Typography
+              gutterBottom
+              variant="body2"
+              component="div"
+              sx={{
+                fontFamily: "Alegreya Sans SC",
+                color: "cyan",
+                fontSize: "1.1rem",
+              }}
+            >
+              {` #${props?.nft?.token_id}`}
+            </Typography>
           </Stack>
           
         </CardContent>

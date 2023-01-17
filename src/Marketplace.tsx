@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Typography} from "@mui/material";
 import NftMarketList from "./NftMarketList";
 import NftTruckMarketList from "./NftTruckMarketList";
-// import NftTireMarketList from "./NftTireMarketList";
+import NftTireMarketList from "./NftTireMarketList";
 require("dotenv").config();
 
 interface MarketplaceProps {
@@ -42,12 +42,12 @@ const Marketplace = ({ client, link }: MarketplaceProps) => {
         sell_token_address: process.env.REACT_APP_MONSTERTRUCK_TOKEN_ADDRESS,
       })
     );
-    // setTireMarketplace(
-    //   await client.getOrders({
-    //     status: ImmutableOrderStatus.active,
-    //     sell_token_address: process.env.REACT_APP_TIRE_TOKEN_ADDRESS,
-    //   })
-    // );
+    setTireMarketplace(
+      await client.getOrders({
+        status: ImmutableOrderStatus.active,
+        sell_token_address: process.env.REACT_APP_TRUCKTIRE_TOKEN_ADDRESS,
+      })
+    );
   }
 
   async function buyHandler(orderId: number) {
@@ -60,7 +60,7 @@ const Marketplace = ({ client, link }: MarketplaceProps) => {
   return (
     <div>
       <div style={{padding:20}}>
-        {marketplace?.result && (
+        {marketplace?.result?.length > 0 && (
           <Typography
             sx={{
               fontFamily: "Alegreya Sans SC",
@@ -76,14 +76,14 @@ const Marketplace = ({ client, link }: MarketplaceProps) => {
             NFTs:
           </Typography>
         )}
-        {marketplace?.result && (
+        {marketplace?.result?.length > 0 && (
           <NftMarketList
             nfts={JSON.parse(JSON.stringify(marketplace?.result))}
             buy={buyHandler}
             client
           />
         )}
-        {truckMarketplace?.result && (
+        {truckMarketplace?.result?.length > 0 && (
           <Typography
             sx={{
               fontFamily: "Alegreya Sans SC",
@@ -99,32 +99,48 @@ const Marketplace = ({ client, link }: MarketplaceProps) => {
             NFTs:
           </Typography>
         )}
-        {truckMarketplace?.result  && (
+        {truckMarketplace?.result?.length > 0  && (
           <NftTruckMarketList
             nfts={JSON.parse(JSON.stringify(truckMarketplace?.result))}
             buy={buyHandler}
             client
           />
         )}
-        {/* {tireMarketplace?.result.length > 0  && (
+        {tireMarketplace?.result?.length > 0 && (
+          <Typography
+            sx={{
+              fontFamily: "Alegreya Sans SC",
+              fontSize: "2rem",
+              color: "red",
+            }}
+          >
+            Buy{" "}
+            {
+              JSON.parse(JSON.stringify(tireMarketplace?.result))[0]?.sell.data
+                .properties.collection.name
+            }{" "}
+            NFTs:
+          </Typography>
+        )}
+        {tireMarketplace?.result?.length > 0  && (
           <NftTireMarketList
-            nfts={JSON.parse(JSON.stringify(marketplace?.result))}
+            nfts={JSON.parse(JSON.stringify(tireMarketplace?.result))}
             buy={buyHandler}
             client
           />
-        )} */}
+        )}
       </div>
       <br />
       <br />
       <br />
-      <div>
+      {/* <div>
         <Typography sx={{ fontSize: "1rem", color: "cyan" }}>
           Marketplace (active sell orders):
         </Typography>
         <Typography sx={{ fontSize: "1rem", color: "cyan" }}>
           {JSON.stringify(marketplace.result)}
         </Typography>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 
 const NftTruckCard = (props) => {
-  console.log('card',props);
 
   return (
     <Card
@@ -51,7 +50,7 @@ const NftTruckCard = (props) => {
                 fontSize: "1rem",
               }}
             >
-              {` ${props?.nft?.metadata.name}`}
+              {` ${props?.nft?.metadata?.name}`}
             </Typography>
             <Typography
               gutterBottom
@@ -77,7 +76,7 @@ const NftTruckCard = (props) => {
                 color: "lawngreen",
                 fontSize: ".85rem",
               }}
-            >{`Attack:  ${props?.nft?.metadata.attack}`}</Typography>
+            >{`Attack:  ${props?.nft?.metadata?.attack}`}</Typography>
             <Typography
               gutterBottom
               variant="body2"
@@ -87,7 +86,7 @@ const NftTruckCard = (props) => {
                 color: "gold",
                 fontSize: ".85rem",
               }}
-            >{`Crush:  ${props?.nft?.metadata.crush}`}</Typography>
+            >{`Crush:  ${props?.nft?.metadata?.crush}`}</Typography>
             <Typography
               gutterBottom
               variant="body2"
@@ -97,7 +96,7 @@ const NftTruckCard = (props) => {
                 color: "red",
                 fontSize: ".85rem",
               }}
-            >{`Bounce:  ${props?.nft?.metadata.bounce}`}</Typography>
+            >{`Bounce:  ${props?.nft?.metadata?.bounce}`}</Typography>
           </Stack>
         </CardContent>
       </CardActionArea>

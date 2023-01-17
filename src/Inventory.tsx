@@ -110,6 +110,26 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
     setMonsterTruckInventory(await client.getAssets({ user: wallet, sell_orders: true , collection: truck_token_address}));
   }
 
+  async function transferTire() {
+    try{
+      // Call the method
+      let result = await link.transfer([
+        {
+          "type": ERC721TokenType.ERC721,
+          "toAddress": recipientAddress,
+          "tokenId": transferTokenId,
+          "tokenAddress": tire_token_address
+        }
+    ])
+      // Print the result
+      console.log(result)
+  }catch(error){
+      // Catch and print out the error
+      console.error(error)
+  }    
+    setTireInventory(await client.getAssets({ user: wallet, sell_orders: true , collection: tire_token_address}));
+  }
+
   // sell an asset
   async function sellCar() {
     await link.sell({
@@ -129,6 +149,17 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       tokenAddress: truck_token_address,
     });
     setMonsterTruckInventory(await client.getAssets({ user: wallet, sell_orders: true , collection: truck_token_address}));
+    setSellAmount('');
+    setSellTokenId('');
+  }
+
+  async function sellTire() {
+    await link.sell({
+      amount: sellAmount,
+      tokenId: sellTokenId,
+      tokenAddress: tire_token_address,
+    });
+    setMonsterTruckInventory(await client.getAssets({ user: wallet, sell_orders: true , collection: tire_token_address}));
     setSellAmount('');
     setSellTokenId('');
   }
@@ -339,11 +370,11 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       </Box>
       
       </Stack>
-      {monsterTruckInventory.result?.length > 0 && <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "orangered" }}>
+      {monsterTruckInventory?.result?.length > 0 && <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "orangered" }}>
         Your Monster Trucks:
       </Typography>}
-      {monsterTruckInventory.result?.length > 0 && <NftTruckList nfts={monsterTruckInventory.result} />}
-      {monsterTruckInventory.result?.length > 0 && <Stack direction="row" sx={{justifyContent: 'space-between'}}>
+      {monsterTruckInventory?.result?.length > 0 && <NftTruckList nfts={monsterTruckInventory?.result} />}
+      {monsterTruckInventory?.result?.length > 0 && <Stack direction="row" sx={{justifyContent: 'space-between'}}>
       <Box>
         <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "1rem", color: "deepskyblue" }}>
           Transfer Monster Truck:
@@ -395,7 +426,56 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       {tireInventory.result?.length > 0 && <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "orangered" }}>
         Your Monster Tires:
       </Typography>}
-      {tireInventory.result?.length > 0 && <NftTireList nfts={tireInventory?.result} />}
+      {tireInventory?.result?.length > 0 && <NftTireList nfts={tireInventory?.result} />}
+      {tireInventory?.result?.length > 0 && <Stack direction="row" sx={{justifyContent: 'space-between'}}>
+      <Box>
+        <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "1rem", color: "deepskyblue" }}>
+          Transfer Monster Tire:
+        </Typography>        
+        <label style={{fontFamily: "Alegreya Sans SC", color: "deepskyblue" }}>
+          Truck ID:
+          <input style={{borderRadius:5, maxWidth:100, border: '2px solid deepskyblue'}}
+            type="text"
+            value={transferTokenId}
+            onChange={(e) => setTransferTokenId(e.target.value)}
+          />
+        </label>
+        <label style={{ color: "deepskyblue" }}>
+          To:
+          <input style={{borderRadius:5, maxWidth:100, border: '2px solid deepskyblue'}}
+            type="text"
+            value={recipientAddress}
+            onChange={(e) => setRecipientAddress(e.target.value)}
+          />
+        </label>
+        
+        <Button variant='contained' size='small' onClick={transferTire} style={{fontFamily: "Alegreya Sans SC", margin:2, borderRadius:5, color: 'black', backgroundColor: 'deepskyblue'}}>Transfer</Button>
+      </Box>
+      <Box>
+        <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "1rem", color: "peachpuff" }}>
+          List Monster Tire For Sale:
+        </Typography>        
+        <label style={{fontFamily: "Alegreya Sans SC", color: "peachpuff" }}>
+          Truck ID:
+          <input style={{borderRadius:5, maxWidth:100, border: '2px solid peachpuff'}}
+            type="text"
+            value={sellTokenId}
+            onChange={(e) => setSellTokenId(e.target.value)}
+          />
+        </label>
+        <label style={{ color: "peachpuff" }}>
+          Price (ETH):
+          <input style={{borderRadius:5, maxWidth:100, border: '2px solid peachpuff'}}
+            type="text"
+            value={sellAmount}
+            onChange={(e) => setSellAmount(e.target.value)}
+          />
+        </label>
+        
+        <Button variant='contained' size='small' onClick={sellTire} style={{fontFamily: "Alegreya Sans SC", margin:2, borderRadius:5, color: 'black', backgroundColor: 'peachpuff'}}>List</Button>
+      </Box>
+      
+      </Stack>}
       {false && <div>
       <div>
         <Typography sx={{ fontSize: "1rem", color: "cyan" }}>
