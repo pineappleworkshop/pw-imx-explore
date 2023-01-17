@@ -5,7 +5,7 @@ import {
   ImmutableOrderStatus,
 } from "@imtbl/imx-sdk";
 import { useEffect, useState } from "react";
-import {Container, Typography} from "@mui/material";
+import { Typography} from "@mui/material";
 import NftMarketList from "./NftMarketList";
 import NftTruckMarketList from "./NftTruckMarketList";
 // import NftTireMarketList from "./NftTireMarketList";
@@ -51,20 +51,6 @@ const Marketplace = ({ client, link }: MarketplaceProps) => {
   }
 
   async function buyHandler(orderId: number) {
-    console.log('orderId',orderId);
-    await link.buy({
-      orderIds: [orderId.toString()],
-    });
-  }
-
-  async function buyTruckHandler(orderId: number) {
-    console.log('orderId',orderId);
-    await link.buy({
-      orderIds: [orderId.toString()],
-    });
-  }
-
-  async function buyTireHandler(orderId: number) {
     console.log('orderId',orderId);
     await link.buy({
       orderIds: [orderId.toString()],

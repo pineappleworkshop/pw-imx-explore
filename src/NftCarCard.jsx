@@ -9,7 +9,11 @@ import {
 } from "@mui/material";
 
 const NftCarCard = (props) => {
-  console.log('card',props);
+  // console.log('card',props);
+
+  const carSelectedHandler = () => {
+    props.onSelect(props?.nft);
+  }
 
   return (
     <Card
@@ -22,7 +26,7 @@ const NftCarCard = (props) => {
         borderWidth: 2,
       }}
     >
-      <CardActionArea>
+      <CardActionArea onClick={carSelectedHandler}>
         <CardMedia
           component="img"
           height="210"
@@ -37,7 +41,7 @@ const NftCarCard = (props) => {
         >
           <Stack direction="row" sx={{ justifyContent: "space-between" }}>
             <Box >
-              <img src={props?.nft?.collection.icon_url} style={{ borderRadius: 10 }}/>
+              <img src={props?.nft?.collection?.icon_url} style={{ borderRadius: 10 }}/>
             </Box>
             
 

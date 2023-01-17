@@ -289,7 +289,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       </Typography>
       </Stack>
       {false && <NftList nfts={inventory.result} />}
-      <CarNftList nfts={inventory.result} />
+      <CarNftList nfts={inventory?.result} />
       <Stack direction="row" sx={{justifyContent: 'space-between'}}>
       <Box>
         <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "1rem", color: "deepskyblue" }}>
@@ -395,7 +395,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       {tireInventory.result?.length > 0 && <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "orangered" }}>
         Your Monster Tires:
       </Typography>}
-      {tireInventory.result?.length > 0 && <NftTireList nfts={tireInventory.result} />}
+      {tireInventory.result?.length > 0 && <NftTireList nfts={tireInventory?.result} />}
       {false && <div>
       <div>
         <Typography sx={{ fontSize: "1rem", color: "cyan" }}>

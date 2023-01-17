@@ -6,6 +6,7 @@ import Marketplace from "./Marketplace";
 import Inventory from "./Inventory";
 import Bridging from "./Bridging";
 import Racetrack from "./Racetrack";
+import Chopshop from "./Chopshop";
 require("dotenv").config();
 
 const App = () => {
@@ -46,9 +47,12 @@ const App = () => {
         case "inventory":
           if (wallet === "undefined") return <div>Connect wallet</div>;
           return <Inventory client={client} link={link} wallet={wallet} />;
-          case "racetrack":
+        case "racetrack":
           if (wallet === "undefined") return <div>Connect wallet</div>;
           return <Racetrack client={client} link={link} wallet={wallet} />;
+        case "chopshop":
+          if (wallet === "undefined") return <div>Connect wallet</div>;
+          return <Chopshop client={client} link={link} wallet={wallet} />;
         case "bridging":
           if (wallet === "undefined") return <div>Connect wallet</div>;
           return <Bridging client={client} link={link} wallet={wallet} />;
@@ -92,6 +96,7 @@ const App = () => {
       <button onClick={() => setTab("inventory")}>Inventory</button>
       <button onClick={() => setTab("bridging")}>Deposit and withdrawal</button>
       <button onClick={() => setTab("racetrack")}>Race Track</button>
+      <button onClick={() => setTab("chopshop")}>Chop Shop</button>
       <br />
       <br />
       <br />

@@ -10,8 +10,6 @@ import {
 import { useEffect, useState } from "react";
 
 const NftMarketCard = (props) => {
-  const [asset, setAsset] = useState();
-  console.log(props);
   const clickBuyHandler = () => {
     props.buy(Number(props?.nft?.order_id));
   };
@@ -21,7 +19,7 @@ const NftMarketCard = (props) => {
     tokenId,
     includeFees
   ) => {
-    const response = await props.client.getAsset({
+    const response = await props?.client?.getAsset({
       tokenAddress,
       tokenId,
       includeFees,

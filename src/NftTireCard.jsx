@@ -35,7 +35,7 @@ const NftTireCard = (props) => {
         >
           <Stack direction="row" sx={{ justifyContent: "space-between" }}>
             <Box >
-              <img src={props?.nft?.collection.icon_url} style={{ borderRadius: 10 }}/>
+              <img src={props?.nft?.collection?.icon_url} style={{ borderRadius: 10 }}/>
             </Box>
             
 
@@ -49,7 +49,7 @@ const NftTireCard = (props) => {
                 fontSize: "1.1rem",
               }}
             >
-              {` ${props?.nft?.metadata.name}`}
+              {` ${props?.nft?.metadata?.name}`}
             </Typography>
             
           </Stack>

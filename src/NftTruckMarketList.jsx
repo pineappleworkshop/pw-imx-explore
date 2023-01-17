@@ -13,9 +13,9 @@ const NftTruckMarketList = (props) => {
         {props?.nfts.map((nft, i) => (
           <ImageListItem key={i}>
             <NftTruckMarketCard
-              id={nft.sell.data.token_id}
-              image={nft.sell.data.properties.image_url}
-              name={nft.sell.data.properties.name}
+              id={nft?.sell.data.token_id}
+              image={nft?.sell.data.properties.image_url}
+              name={nft?.sell.data.properties.name}
               nft={nft}
               buy={buyHandler}
             />

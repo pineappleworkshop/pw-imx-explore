@@ -20,34 +20,42 @@ interface InventoryProps {
   wallet: string;
 }
 
+// Initialize Link
+let link = new Link('https://link.sandbox.x.immutable.com')
+
 const config = Config.SANDBOX; // Or Config.PRODUCTION
 const clientCore = new ImmutableX(config);
 
 
-const Racetrack = ({ client, link, wallet }: InventoryProps) => {
+const Chopshop = ({ client, wallet }: InventoryProps) => {
   const [inventory, setInventory] =
     useState<ImmutableMethodResults.ImmutableGetAssetsResult>(Object);
-  
+  const [tireInventory, setTireInventory] =
+    useState<ImmutableMethodResults.ImmutableGetAssetsResult>(Object);
   const [carSelected, setCarSelected] = useState<ImmutableMethodResults.ImmutableAsset>(Object);
   
   const [isCarSelected, setIsCarSelected] = useState(false);
   const [mintTokenIdv2, setMintTokenIdv2] = useState("");
+  const [ownedTires, setOwnedTires] = useState<string[]>([]);
+  
 
-
+  const truck_token_address: string = process.env.REACT_APP_MONSTERTRUCK_TOKEN_ADDRESS ?? ""; // contract registered by Immutable
   const car_token_address: string = process.env.REACT_APP_SPEEDCAR_TOKEN_ADDRESS ?? ""; // contract registered by Immutable
   const tire_token_address: string = process.env.REACT_APP_TRUCKTIRE_TOKEN_ADDRESS ?? ""; // contract registered by Immutable
-
+  const burn_mock_address: string = process.env.REACT_APP_MOCK_BURN_ADDRESS ?? ""; 
+  
   useEffect(() => {
     load();
   }, []);
 
   async function load(): Promise<void> {
-    // const invTires = await client.getAssets({ user: wallet, sell_orders: true, collection: tire_token_address});
+    const invTires = await client.getAssets({ user: wallet, sell_orders: true, collection: tire_token_address});
     const invCars = await client.getAssets({ user: wallet, sell_orders: true, collection: car_token_address });
     setInventory(invCars);
+    setTireInventory(invTires);
     console.log('invCars',invCars);
-
-    getListAssets(tire_token_address, 'id')
+    //getting truck ids so we know the next mint number
+    getListAssets(truck_token_address, 'id')
     .then((result) => {
       //print the result
       console.log(result);
@@ -57,6 +65,19 @@ const Racetrack = ({ client, link, wallet }: InventoryProps) => {
     .catch((e) => {
       console.log(e);
     });
+
+    let tireIds: string[] = await getUserAssets(tire_token_address, 'id')
+    .then((result) => {
+      console.log('assets',result);
+      return result?.map(tire => tire.token_id)
+    })
+    .catch((e) => {
+      console.log(e);
+      return [];
+    });
+    console.log('tireIds',tireIds);
+    setOwnedTires(tireIds);
+
   }
 
   const getListAssets = async (
@@ -69,6 +90,17 @@ const Racetrack = ({ client, link, wallet }: InventoryProps) => {
     return response.result;
   };
 
+  const getUserAssets = async (
+    collectionAddress: string,
+    orderBy: 'updated_at' | 'id'
+  ) => {
+    const response = await clientCore.listAssets({
+      collection: collectionAddress,
+      user: wallet
+    });
+    return response.result;
+  };
+
   const carSelectedHandler = (car: ImmutableMethodResults.ImmutableAsset) => {    
     setCarSelected(car);  
     setIsCarSelected((prev) => {
@@ -76,7 +108,51 @@ const Racetrack = ({ client, link, wallet }: InventoryProps) => {
     })
   }
 
-  const raceHandler = () => {    
+  const buildHandler = async() => {    
+    //check for 4 tires and send to "burn" wallet
+    if(isCarSelected && ownedTires.length >= 4){
+      try{
+        // Call the method
+        let result = await link.batchNftTransfer([
+          {
+                "type": ERC721TokenType.ERC721,
+                "toAddress": burn_mock_address,
+                "tokenId": ownedTires[0],
+                "tokenAddress": tire_token_address
+          },
+          {
+                "type": ERC721TokenType.ERC721,
+                "toAddress": burn_mock_address,
+                "tokenId": ownedTires[1],
+                "tokenAddress": tire_token_address
+          },
+          {
+                "type": ERC721TokenType.ERC721,
+                "toAddress": burn_mock_address,
+                "tokenId": ownedTires[2],
+                "tokenAddress": tire_token_address
+          },
+          {
+                "type": ERC721TokenType.ERC721,
+                "toAddress": burn_mock_address,
+                "tokenId": ownedTires[3],
+                "tokenAddress": tire_token_address
+          },
+          {
+                "type": ERC721TokenType.ERC721,
+                "toAddress": burn_mock_address,
+                "tokenId": carSelected.token_id,
+                "tokenAddress": car_token_address
+          }
+        ])
+          // Print the result
+          console.log('batch',result)
+      }catch(error){
+          // Catch and print out the error
+          console.error(error)
+      }
+    }
+    //then mint truck
    mintv2();
   }
 
@@ -136,7 +212,7 @@ const Racetrack = ({ client, link, wallet }: InventoryProps) => {
             ],
           },
         ],
-        contractAddress: tire_token_address.toLowerCase(),
+        contractAddress: truck_token_address.toLowerCase(),
 
         // globally set royalties
         royalties: [
@@ -148,14 +224,16 @@ const Racetrack = ({ client, link, wallet }: InventoryProps) => {
       },
     ]);
     console.log(`Token minted: ${result}`);
-    setInventory(await client.getAssets({ user: wallet, sell_orders: true, collection: car_token_address  }));
-    
-    }
+    setInventory(await client.getAssets({ user: wallet, sell_orders: true, collection: car_token_address  }));    
+  }
 
   return (
     <Container>
       <Typography sx={{ fontFamily: "Alegreya Sans SC",fontSize: "2.5rem", color: "cyan" }}>
-        Race to Win a Monster Truck Tire:
+        Welcome to the Chop Shop:
+      </Typography>
+      <Typography sx={{ fontFamily: "Alegreya Sans SC",fontSize: "2rem", color: "red" }}>
+        Build a Monster Truck from your Race Car and 4 Monster Truck Tires
       </Typography>
       <Stack direction="row" sx={{justifyContent: 'space-around'}}>
       {!isCarSelected  && <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "red" }}>
@@ -170,9 +248,9 @@ const Racetrack = ({ client, link, wallet }: InventoryProps) => {
                 color: "black",
                 backgroundColor: "red",
               }}
-              onClick={raceHandler}
+              onClick={buildHandler}
             >
-              Race Now!
+              Build a Monster Truck
             </Button>  }        
             
       </Stack>      
@@ -185,4 +263,4 @@ const Racetrack = ({ client, link, wallet }: InventoryProps) => {
   );
 };
 
-export default Racetrack;
+export default Chopshop;

@@ -7,10 +7,9 @@ import {
   CardMedia,
   Button,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-const NftMarketCard = (props) => {
-  const [asset, setAsset] = useState();
+const NftTruckMarketCard = (props) => {
   console.log(props);
   const clickBuyHandler = () => {
     props.buy(Number(props?.nft?.order_id));
@@ -21,7 +20,7 @@ const NftMarketCard = (props) => {
     tokenId,
     includeFees
   ) => {
-    const response = await props.client.getAsset({
+    const response = await props?.client?.getAsset({
       tokenAddress,
       tokenId,
       includeFees,
@@ -144,4 +143,4 @@ const NftMarketCard = (props) => {
   );
 };
 
-export default NftMarketCard;
+export default NftTruckMarketCard;
