@@ -1,24 +1,12 @@
 # Immutable X integration example
-This is a skeleton React app for the purpose of providing code examples for building a marketplace on Immutable X. It covers:
-- View sell orders and buying NFTs
-- View Immutable X inventory and ETH balance
-- Creating and cancelling sell orders
-- Minting on Immutable X
-- Depositing and withdrawing ETH and NFTs
-
-## Polling
-If you want to maintain a state of the entire Immutable X ecosystem in a local database, you currently have to poll our API endpoints and update events in your database accordingly. We will be looking at adding webhooks in the future.
-
-
-| Endpoint  | Action |
-| ---  | --- |
-| `/mints` | Insert new asset |
-| `/transfers` | Update asset ownership |
-| `/trades` | Update asset ownership |
-| `/orders` | Add and update orders |
-| `/withdrawals` | Set asset status to eth / update balance |
-| `/deposits` | Set asset status to imx / update balance |
-
+Racing game:
+-Buy a car from Marketplace
+-Goto 'Race Track' and race your car. 
+-you automatically win the race!
+-Goto Your Garage and see your newly won Monster Tire
+-When you have 4 Monster Tires:
+--you can send your Car + 4 Monster Tires to the 'Chop Shop'
+--mint a Monster Truck NFT
 
 ## Available Scripts
 
