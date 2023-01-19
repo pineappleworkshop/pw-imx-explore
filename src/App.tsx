@@ -6,6 +6,8 @@ import Marketplace from "./Marketplace";
 import Inventory from "./Inventory";
 import Racetrack from "./Racetrack";
 import Chopshop from "./Chopshop";
+import { Race } from "./Race";
+// import { Race } from "./Race";
 
 require("dotenv").config();
 
@@ -82,7 +84,7 @@ const App = () => {
           return <Inventory client={client} link={link} wallet={wallet} />;
         case "racetrack":
           if (wallet === undefined) return <div>Connect wallet</div>;
-          return <Racetrack client={client} link={link} wallet={wallet} />;
+          return <Race />;
         case "chopshop":
           if (wallet === undefined) return <div>Connect wallet</div>;
           return <Chopshop client={client} link={link} wallet={wallet} />;
