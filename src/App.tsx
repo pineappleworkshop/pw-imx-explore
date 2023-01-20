@@ -6,6 +6,8 @@ import Marketplace from "./Marketplace";
 import Inventory from "./Inventory";
 import Racetrack from "./Racetrack";
 import Chopshop from "./Chopshop";
+import { Race } from "./Race";
+// import { Race } from "./Race";
 
 require("dotenv").config();
 
