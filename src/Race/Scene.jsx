@@ -8,14 +8,14 @@ import {Track} from "./Track";
 import {Ground} from "./Ground";
 import {Car} from "./Car";
 
-export function Scene() {
+export function Scene({vehicleSpecs}) {
     const [thirdPerson, setThirdPerson] = useState(true)
     const [cameraPosition, setCameraPosition] = useState([-6, 3.9, 6.21])
 
     useEffect(() => {
         function keydownHandler(e) {
             if(e.key === "k") {
-                if(thirdPerson) setCameraPosition([-6, 3.9, 6.21 + Math.random() * 0.01])
+                if(thirdPerson) setCameraPosition([-6, 3.9, 10])
                 setThirdPerson(!thirdPerson)
             }
         }
@@ -31,7 +31,7 @@ export function Scene() {
             {!thirdPerson && <OrbitControls target={[-2.64, -0.71, 0.03]} />}
             <Track />
             <Ground />
-            <Car thirdPerson={thirdPerson}/>
+            <Car vehicleSpecs={vehicleSpecs} thirdPerson={thirdPerson}/>
         </Suspense>
     )
 }

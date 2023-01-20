@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import {Typography, Stack, Box, Button, Container} from "@mui/material/";
 import CarNftList from "./CarNftList";
 import NftCarCard from "./NftCarCard";
+import { Race } from "./Race";
 require("dotenv").config();
 
 interface InventoryProps {
@@ -32,6 +33,7 @@ const Racetrack = ({ client, link, wallet }: InventoryProps) => {
   
   const [isCarSelected, setIsCarSelected] = useState(false);
   const [mintTokenIdv2, setMintTokenIdv2] = useState("");
+  const [raceNow, setRaceNow] = useState<boolean>(false)
 
 
   const car_token_address: string = process.env.REACT_APP_SPEEDCAR_TOKEN_ADDRESS ?? ""; // contract registered by Immutable
@@ -77,7 +79,8 @@ const Racetrack = ({ client, link, wallet }: InventoryProps) => {
   }
 
   const raceHandler = () => {    
-   mintv2();
+    setRaceNow(true)
+  //  mintv2();
   }
 
   async function mintv2() {
@@ -153,7 +156,20 @@ const Racetrack = ({ client, link, wallet }: InventoryProps) => {
     }
 
   return (
-    <Container>
+    <>
+    {raceNow ? (<Container>
+      <Button   variant="contained"
+              size="large"
+              sx={{ 
+                marginBottom: "1rem",
+                fontFamily: "Alegreya Sans SC",
+                fontSize: "1rem",
+                color: "black",
+                backgroundColor: "red",
+              }} onClick={() => setRaceNow(false)}>Exit</Button>
+<Race carSelected ={carSelected} />
+      </Container>): 
+      ( <Container>
       <Typography sx={{ fontFamily: "Alegreya Sans SC",fontSize: "2.5rem", color: "cyan" }}>
         Race to Win a Monster Truck Tire:
       </Typography>
@@ -161,7 +177,7 @@ const Racetrack = ({ client, link, wallet }: InventoryProps) => {
       {!isCarSelected  && <Typography sx={{fontFamily: "Alegreya Sans SC", fontSize: "2rem", color: "red" }}>
           Choose Race Car:
         </Typography>      }  
-        {isCarSelected  &&<Button
+        {isCarSelected &&<Button
               variant="contained"
               size="large"
               sx={{
@@ -177,11 +193,10 @@ const Racetrack = ({ client, link, wallet }: InventoryProps) => {
             
       </Stack>      
       {!isCarSelected && <CarNftList nfts={inventory?.result} onSelect={carSelectedHandler} />   } 
-      {isCarSelected  && <NftCarCard id={carSelected?.token_id} image={carSelected?.image_url} nft={carSelected} onSelect={carSelectedHandler} />   } 
-      
-      
-    <Box sx={{height: '80vh'}}></Box>
-    </Container>
+      {isCarSelected  && <NftCarCard id={carSelected?.token_id} image={carSelected?.image_url} nft={carSelected} onSelect={carSelectedHandler} /> } 
+    </Container>)
+            }
+            </>
   );
 };
 

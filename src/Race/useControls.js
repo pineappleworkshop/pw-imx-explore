@@ -1,9 +1,15 @@
 import {useEffect, useState} from "react";
 
-export const useControls = (vehicleApi, chassisApi) => {
+export const useControls = (vehicleApi,  chassisApi, vehicleSpecs) => {
     let [controls, setControls] = useState({
 
     })
+    const handling = vehicleSpecs.handling 
+    const speed = vehicleSpecs.speed
+
+    const normalizeHandling = (handling / 1000) + .7
+
+    const backUpSpeed = `-${speed / 2}`
 
     useEffect(() => {
         const keyDownPressHandler = (e) => {
@@ -29,24 +35,25 @@ export const useControls = (vehicleApi, chassisApi) => {
 
     useEffect(() => {
         if(controls.w) {
-            vehicleApi.applyEngineForce(150, 2)
-            vehicleApi.applyEngineForce(150, 3)
+            vehicleApi.applyEngineForce(speed, 2)
+            vehicleApi.applyEngineForce(speed, 3)
         } else if (controls.s) {
-            vehicleApi.applyEngineForce(-150, 2)
-            vehicleApi.applyEngineForce(-150, 3)
+    
+            vehicleApi.applyEngineForce(backUpSpeed, 2)
+            vehicleApi.applyEngineForce(backUpSpeed, 3)
         } else {
             vehicleApi.applyEngineForce(0, 2)
             vehicleApi.applyEngineForce(0, 3)
         }
 
         if(controls.a){
-            vehicleApi.setSteeringValue(0.35, 2)
-            vehicleApi.setSteeringValue(0.35, 3)
+            vehicleApi.setSteeringValue(normalizeHandling, 2)
+            vehicleApi.setSteeringValue(normalizeHandling, 3)
             vehicleApi.setSteeringValue(-0.1, 0)
             vehicleApi.setSteeringValue(-0.1, 1)
         } else if(controls.d){
-            vehicleApi.setSteeringValue(-0.35, 2)
-            vehicleApi.setSteeringValue(-0.35, 3)
+            vehicleApi.setSteeringValue(`-${normalizeHandling}`, 2)
+            vehicleApi.setSteeringValue(`-${normalizeHandling}`, 3)
             vehicleApi.setSteeringValue(0.1, 0)
             vehicleApi.setSteeringValue(0.1, 1)
         } else {

@@ -55,8 +55,8 @@ export function Ground() {
                     transparent={true}
                     color={[0.5, 0.5, 0.5]}
                     envMapIntensity={0.35}
-                    metalness={0.05}
-                    roughness={0.4}
+                    metalness={0.01}
+                    roughness={0.8}
                     dithering={true}
                     blur={[1024, 512]}
                     mixBlur={3}

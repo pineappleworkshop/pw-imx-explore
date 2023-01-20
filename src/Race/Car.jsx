@@ -7,19 +7,58 @@ import {WheelDebug} from "./WheelDebug";
 import {useControls} from "./useControls";
 import {Quaternion, Vector3} from "three";
 
-export function Car({thirdPerson, position = [-1.5, 0.5, 3]}) {
+export function Car({thirdPerson, vehicleSpecs, position = [-1.5, 0.5, 3]}) {
     // thanks to the_86_guy!
     // https://sketchfab.com/3d-models/low-poly-car-muscle-car-2-ac23acdb0bd54ab38ea72008f3312861
+
+    function generateVehicleName(name) {
+        if(name === "Green Lambo") {
+            return "car2"
+        } else if(name === "Red Lambo") {
+            return "ferrari"
+        } else {
+            return "porsche"
+        }
+    }
+
+    const vehicleName = generateVehicleName(vehicleSpecs.name)
     let mesh = useLoader(
         GLTFLoader,
-        process.env.PUBLIC_URL + "/models/car.glb"
+        process.env.PUBLIC_URL + `/models/${vehicleName}.glb`
     ).scene;
 
+    const carOptions = { 
+        ferrari : {
+        scale: 0.02,
+        depth: -2.75,
+        positionX: 0,
+        positionY: 0
+    }, 
+        porsche: {
+        scale: 0.05,
+        depth: -1.75, 
+        positionX: 0,
+        positionY: 0
+}, 
+        car2 : {
+            scale: .0010, 
+            depth: -18,
+            positionX: -365,
+            positionY: -67
+        }}
+
+    const scale = carOptions[vehicleName].scale
+    const depth = carOptions[vehicleName].depth
+    const positionX = carOptions[vehicleName].positionX
+    const positionY = carOptions[vehicleName].positionY
+
+
+
     // const position =
-    const width = 0.15
+    const width = 0.3
     const height = 0.07
-    const front = 0.15
-    const wheelRadius = 0.05
+    const front = .15
+    const wheelRadius = 0.1
 
     const chassisBodyArgs = [width, height, front * 2]
     const [chassisBody, chassisApi] = useBox(
@@ -42,7 +81,7 @@ export function Car({thirdPerson, position = [-1.5, 0.5, 3]}) {
         useRef(null)
     )
 
-    useControls(vehicleApi, chassisApi)
+    useControls(vehicleApi, chassisApi, vehicleSpecs)
 
     useFrame((state) => {
         if(!thirdPerson) return
@@ -68,8 +107,8 @@ export function Car({thirdPerson, position = [-1.5, 0.5, 3]}) {
     })
 
     useEffect(() => {
-        mesh.scale.set(0.0012, 0.0012, 0.0012);
-        mesh.children[0].position.set(-365, -18, -67);
+        mesh.scale.set(scale, scale, scale);
+        mesh.children[0].position.set(positionX, depth, positionY);
     }, [mesh]);
 
     return (

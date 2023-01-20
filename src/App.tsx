@@ -84,7 +84,7 @@ const App = () => {
           return <Inventory client={client} link={link} wallet={wallet} />;
         case "racetrack":
           if (wallet === undefined) return <div>Connect wallet</div>;
-          return <Race />;
+          return <Racetrack client={client} link={link} wallet={wallet} />;
         case "chopshop":
           if (wallet === undefined) return <div>Connect wallet</div>;
           return <Chopshop client={client} link={link} wallet={wallet} />;
