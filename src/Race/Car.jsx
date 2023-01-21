@@ -1,5 +1,5 @@
 import { useFrame, useLoader } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useLayoutEffect } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import {useBox, useRaycastVehicle} from "@react-three/cannon";
 import {useWheels} from "./useWheels";
@@ -13,11 +13,11 @@ export function Car({thirdPerson, vehicleSpecs, position = [-1.5, 0.5, 3]}) {
 
     function generateVehicleName(name) {
         if(name === "Green Lambo") {
-            return "car2"
+            return "lamborghini"
         } else if(name === "Red Lambo") {
             return "ferrari"
         } else {
-            return "porsche"
+            return "porschecarrera"
         }
     }
 
@@ -34,17 +34,17 @@ export function Car({thirdPerson, vehicleSpecs, position = [-1.5, 0.5, 3]}) {
         positionX: 0,
         positionY: 0
     }, 
-        porsche: {
-        scale: 0.05,
-        depth: -1.75, 
+        porschecarrera: {
+        scale: 0.06,
+        depth: 0, 
         positionX: 0,
         positionY: 0
 }, 
-        car2 : {
-            scale: .0010, 
-            depth: -18,
-            positionX: -365,
-            positionY: -67
+        lamborghini : {
+            scale: .06, 
+            depth: -.75,
+            positionX: 0,
+            positionY: 0
         }}
 
     const scale = carOptions[vehicleName].scale
@@ -111,6 +111,29 @@ export function Car({thirdPerson, vehicleSpecs, position = [-1.5, 0.5, 3]}) {
         mesh.children[0].position.set(positionX, depth, positionY);
     }, [mesh]);
 
+    // const [ api] = useBox()
+
+    // console.log({api})
+
+// //   useEffect(() => {
+// //     setState({ api })
+// //     return () => setState({ api: null })
+// //   }, [api])
+
+//   useLayoutEffect(
+//     () =>
+//       api.velocity.subscribe((velocity) => {
+//         console.log({velocity})
+//         // const speed = v.set(...velocity).length()
+//         // const gearPosition = speed / (maxSpeed / gears)
+//         // const rpmTarget = Math.max(((gearPosition % 1) + Math.log(gearPosition)) / 6, 0)
+
+    
+//         // Object.assign(mutation, { rpmTarget, speed, velocity })
+//       }),
+//     [api],
+//   )
+
     return (
         <group ref={vehicle} name="vehicle">
             <group ref={chassisBody} name="chassisBody">
@@ -120,11 +143,10 @@ export function Car({thirdPerson, vehicleSpecs, position = [-1.5, 0.5, 3]}) {
             {/*    <meshBasicMaterial transparent={true} opacity={0.3} />*/}
             {/*    <boxGeometry args={chassisBodyArgs} />*/}
             {/*</mesh>*/}
-
             <WheelDebug wheelRef={wheels[0]} radius={wheelRadius} />
             <WheelDebug wheelRef={wheels[1]} radius={wheelRadius} />
             <WheelDebug wheelRef={wheels[2]} radius={wheelRadius} />
-            <WheelDebug wheelRef={wheels[3]} radius={wheelRadius} />
+            <WheelDebug wheelRef={wheels[3]} radius={wheelRadius} /> 
         </group>
     );
 }
