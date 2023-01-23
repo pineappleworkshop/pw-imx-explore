@@ -14,9 +14,8 @@ import CarNftList from './CarNftList'
 import NftTruckList from '../../NftTruckList'
 import NftTireList from '../../NftTireList'
 import InventoryStats from './InventoryStats'
-import TransferCar from './TransferCar'
-import ListCarForSale from './ListCarForSale'
 import TransferForm from '../TransferForm'
+import ListCarForSale from './ListCarForSale'
 require('dotenv').config()
 
 interface InventoryProps {
@@ -82,6 +81,36 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
     console.log('invCars', invCars)
   }
 
+  // transfer an asset
+  async function transferCar() {
+    try {
+      // Call the method
+      let result = await link.transfer([
+        {
+          type: ERC721TokenType.ERC721,
+          toAddress: recipientAddress,
+          tokenId: transferTokenId,
+          tokenAddress: car_token_address,
+        },
+      ])
+      // Print the result
+      console.log(result)
+    } catch (error) {
+      // Catch and print out the error
+      console.error(error)
+    }
+
+    setInventory(
+      await client.getAssets({
+        user: wallet,
+        sell_orders: true,
+        collection: car_token_address,
+      })
+    )
+    setRecipientAddress('')
+    setTransferTokenId('')
+  }
+
   async function transferTruck() {
     try {
       // Call the method
@@ -135,6 +164,22 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
   }
 
   // sell an asset
+  async function sellCar() {
+    await link.sell({
+      amount: sellAmount,
+      tokenId: sellTokenId,
+      tokenAddress: car_token_address,
+    })
+    setInventory(
+      await client.getAssets({
+        user: wallet,
+        sell_orders: true,
+        collection: car_token_address,
+      })
+    )
+    setSellAmount('')
+    setSellTokenId('')
+  }
 
   async function sellTruck() {
     await link.sell({
@@ -287,7 +332,6 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       process.env.REACT_APP_TOKEN_RECEIVER_ADDRESS ?? ''
     const speedCarAddress: string =
       process.env.REACT_APP_SPEEDCAR_TOKEN_ADDRESS ?? ''
-
     const result = await minterClient.mintV2([
       {
         users: [
@@ -328,7 +372,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       })
     )
   }
-
+  console.log({ inventory })
   return (
     <Container>
       <InventoryStats
