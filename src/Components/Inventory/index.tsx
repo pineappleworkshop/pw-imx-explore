@@ -81,36 +81,6 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
     console.log('invCars', invCars)
   }
 
-  // transfer an asset
-  async function transferCar() {
-    try {
-      // Call the method
-      let result = await link.transfer([
-        {
-          type: ERC721TokenType.ERC721,
-          toAddress: recipientAddress,
-          tokenId: transferTokenId,
-          tokenAddress: car_token_address,
-        },
-      ])
-      // Print the result
-      console.log(result)
-    } catch (error) {
-      // Catch and print out the error
-      console.error(error)
-    }
-
-    setInventory(
-      await client.getAssets({
-        user: wallet,
-        sell_orders: true,
-        collection: car_token_address,
-      })
-    )
-    setRecipientAddress('')
-    setTransferTokenId('')
-  }
-
   async function transferTruck() {
     try {
       // Call the method
