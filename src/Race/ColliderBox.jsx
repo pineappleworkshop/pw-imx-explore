@@ -1,5 +1,5 @@
 import {useBox} from "@react-three/cannon";
-
+import { useCallback } from "react";
 const debug = false
 
 export function ColliderBox({position, scale}) {
@@ -8,6 +8,17 @@ export function ColliderBox({position, scale}) {
         position,
         type: "Static"
     }))
+    const onCollide = useCallback((e) => {console.log("hittt", e)}, [])
+
+    useBox(() => ({
+        args: scale,
+        position,
+        type: "Static",
+        onCollide
+
+    }))
+
+
     return (
         debug && (
             <mesh position={position}>
