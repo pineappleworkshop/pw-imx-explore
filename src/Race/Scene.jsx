@@ -33,8 +33,8 @@ export function Scene({vehicleSpecs}) {
             
             <PerspectiveCamera makeDefault position={cameraPosition} fov={40} />
             {!thirdPerson && <OrbitControls target={[-2.64, -0.71, 0.03]} />}
-            <Sky sunPosition={[10, 10, 10]} scale={1000} />
-            <ambientLight intensity={0.2} />
+            <Sky sunPosition={[50, 50, 0]} scale={1000} />
+            {/* <ambientLight intensity={0.2} /> */}
     
             <Track/>
             <Ground />
