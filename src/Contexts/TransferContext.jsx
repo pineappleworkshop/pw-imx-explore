@@ -6,12 +6,15 @@ const useTransferContext = () => useContext(TransferContext)
 
 function TransferProvider({ children }) {
   const [transferTokenId, setTransferTokenId] = useState('')
+  const [recipientAddress, setRecipientAddress] = useState('')
 
   return (
     <TransferContext.Provider
       value={{
         transferTokenId,
         setTransferTokenId,
+        recipientAddress,
+        setRecipientAddress,
       }}
     >
       {children}

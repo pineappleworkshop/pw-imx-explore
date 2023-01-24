@@ -8,6 +8,7 @@ import Racetrack from './Racetrack'
 import Chopshop from './Chopshop'
 import { Race } from './Race'
 // import { Race } from "./Race";
+import { TransferProvider } from './Contexts/TransferContext'
 
 require('dotenv').config()
 
@@ -99,131 +100,133 @@ const App = () => {
   }
 
   return (
-    <div className="App bg-img">
-      <Stack direction="column" sx={{ p: 5 }}>
-        <Stack direction="row" alignItems="center" justifyContent="center">
-          <Typography
-            variant="h1"
-            component="div"
-            align="center"
-            sx={{
-              fontFamily: 'Alegreya Sans SC',
-              color: 'red',
-              fontSize: '5rem',
-            }}
-          >
-            Rocket Car Garage
-          </Typography>
-          <Button
-            variant="contained"
-            size="small"
-            sx={{
-              marginLeft: 'auto',
-              height: '40px',
-              fontFamily: 'Alegreya Sans SC',
-              fontSize: '1rem',
-              color: 'black',
-              backgroundColor: 'cyan',
-            }}
-            onClick={wallet ? disconnect : linkSetup}
-          >
-            {wallet ? 'Disconnect' : 'Connect'}
-          </Button>
-        </Stack>
+    <TransferProvider>
+      <div className="App bg-img">
+        <Stack direction="column" sx={{ p: 5 }}>
+          <Stack direction="row" alignItems="center" justifyContent="center">
+            <Typography
+              variant="h1"
+              component="div"
+              align="center"
+              sx={{
+                fontFamily: 'Alegreya Sans SC',
+                color: 'red',
+                fontSize: '5rem',
+              }}
+            >
+              Rocket Car Garage
+            </Typography>
+            <Button
+              variant="contained"
+              size="small"
+              sx={{
+                marginLeft: 'auto',
+                height: '40px',
+                fontFamily: 'Alegreya Sans SC',
+                fontSize: '1rem',
+                color: 'black',
+                backgroundColor: 'cyan',
+              }}
+              onClick={wallet ? disconnect : linkSetup}
+            >
+              {wallet ? 'Disconnect' : 'Connect'}
+            </Button>
+          </Stack>
 
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          sx={{ gap: 20, marginTop: '20px' }}
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ gap: 20, marginTop: '20px' }}
+          >
+            <Button
+              variant="contained"
+              size="small"
+              sx={{
+                fontFamily: 'Alegreya Sans SC',
+                fontSize: '1rem',
+                color: 'black',
+                backgroundColor: 'cyan',
+              }}
+              onClick={() => setTab('marketplace')}
+            >
+              Marketplace
+            </Button>
+            <Button
+              variant="contained"
+              size="small"
+              sx={{
+                fontFamily: 'Alegreya Sans SC',
+                fontSize: '1rem',
+                color: 'black',
+                backgroundColor: 'cyan',
+              }}
+              onClick={() => setTab('inventory')}
+            >
+              Inventory
+            </Button>
+            {/* <button onClick={() => setTab("bridging")}>Deposit and withdrawal</button> */}
+            <Button
+              variant="contained"
+              size="small"
+              sx={{
+                fontFamily: 'Alegreya Sans SC',
+                fontSize: '1rem',
+                color: 'black',
+                backgroundColor: 'cyan',
+              }}
+              onClick={() => setTab('racetrack')}
+            >
+              Race Track
+            </Button>
+            <Button
+              variant="contained"
+              size="small"
+              sx={{
+                fontFamily: 'Alegreya Sans SC',
+                fontSize: '1rem',
+                color: 'black',
+                backgroundColor: 'cyan',
+              }}
+              onClick={() => setTab('chopshop')}
+            >
+              Chop Shop
+            </Button>
+          </Stack>
+        </Stack>
+        <Typography
+          gutterBottom
+          variant="body2"
+          component="div"
+          align="center"
+          sx={{
+            fontFamily: 'Alegreya Sans SC',
+            color: 'cyan',
+            fontSize: '1rem',
+          }}
         >
-          <Button
-            variant="contained"
-            size="small"
-            sx={{
-              fontFamily: 'Alegreya Sans SC',
-              fontSize: '1rem',
-              color: 'black',
-              backgroundColor: 'cyan',
-            }}
-            onClick={() => setTab('marketplace')}
-          >
-            Marketplace
-          </Button>
-          <Button
-            variant="contained"
-            size="small"
-            sx={{
-              fontFamily: 'Alegreya Sans SC',
-              fontSize: '1rem',
-              color: 'black',
-              backgroundColor: 'cyan',
-            }}
-            onClick={() => setTab('inventory')}
-          >
-            Inventory
-          </Button>
-          {/* <button onClick={() => setTab("bridging")}>Deposit and withdrawal</button> */}
-          <Button
-            variant="contained"
-            size="small"
-            sx={{
-              fontFamily: 'Alegreya Sans SC',
-              fontSize: '1rem',
-              color: 'black',
-              backgroundColor: 'cyan',
-            }}
-            onClick={() => setTab('racetrack')}
-          >
-            Race Track
-          </Button>
-          <Button
-            variant="contained"
-            size="small"
-            sx={{
-              fontFamily: 'Alegreya Sans SC',
-              fontSize: '1rem',
-              color: 'black',
-              backgroundColor: 'cyan',
-            }}
-            onClick={() => setTab('chopshop')}
-          >
-            Chop Shop
-          </Button>
-        </Stack>
-      </Stack>
-      <Typography
-        gutterBottom
-        variant="body2"
-        component="div"
-        align="center"
-        sx={{
-          fontFamily: 'Alegreya Sans SC',
-          color: 'cyan',
-          fontSize: '1rem',
-        }}
-      >
-        {` Active wallet: ${wallet}`}
-      </Typography>
-      <Typography
-        gutterBottom
-        variant="body2"
-        component="div"
-        align="center"
-        sx={{
-          fontFamily: 'Alegreya Sans SC',
-          color: 'cyan',
-          fontSize: '1.25rem',
-        }}
-      >
-        ETH balance (in wei): {balance?.balance?.toString()}
-      </Typography>
+          {` Active wallet: ${wallet}`}
+        </Typography>
+        <Typography
+          gutterBottom
+          variant="body2"
+          component="div"
+          align="center"
+          sx={{
+            fontFamily: 'Alegreya Sans SC',
+            color: 'cyan',
+            fontSize: '1.25rem',
+          }}
+        >
+          ETH balance (in wei): {balance?.balance?.toString()}
+        </Typography>
 
-      {/* <div>Active wallet: {wallet}</div>
+        {/* <div>Active wallet: {wallet}</div>
       <div>ETH balance (in wei): {balance?.balance?.toString()}</div> */}
 
-      {handleTabs()}
-    </div>
+        {handleTabs()}
+      </div>
+    </TransferProvider>
   )
 }
 

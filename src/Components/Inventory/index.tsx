@@ -287,6 +287,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       process.env.REACT_APP_TOKEN_RECEIVER_ADDRESS ?? ''
     const speedCarAddress: string =
       process.env.REACT_APP_SPEEDCAR_TOKEN_ADDRESS ?? ''
+
     const result = await minterClient.mintV2([
       {
         users: [
