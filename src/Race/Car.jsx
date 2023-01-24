@@ -1,15 +1,18 @@
 import { useFrame, useLoader } from '@react-three/fiber'
-import { useEffect, useRef, useLayoutEffect } from 'react'
+import { useEffect, useRef, useState,useLayoutEffect } from 'react'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { useBox, useRaycastVehicle } from '@react-three/cannon'
 import { useWheels } from './useWheels'
 import { WheelDebug } from './WheelDebug'
 import { useControls } from './useControls'
 import { Quaternion, Vector3 } from 'three'
+import { useCardDataContext } from '../Providers/CarContext'
 
 export function Car({ thirdPerson, vehicleSpecs, position = [-1.5, 0.5, 3] }) {
   // thanks to the_86_guy!
   // https://sketchfab.com/3d-models/low-poly-car-muscle-car-2-ac23acdb0bd54ab38ea72008f3312861
+
+const {speed, setSpeed }  = useCardDataContext()
 
   function generateVehicleName(name) {
     if (name === 'Green Lambo') {
@@ -42,7 +45,7 @@ export function Car({ thirdPerson, vehicleSpecs, position = [-1.5, 0.5, 3] }) {
     },
     lamborghini: {
       scale: 0.06,
-      depth: -1.5,
+      depth: -1.25,
       positionX: 0,
       positionY: 0,
     },
@@ -108,27 +111,19 @@ export function Car({ thirdPerson, vehicleSpecs, position = [-1.5, 0.5, 3] }) {
     mesh.children[0].position.set(positionX, depth, positionY)
   }, [mesh])
 
-  // const [ api] = useBox()
+  const v = new Vector3()
 
-  // console.log({api})
+    useLayoutEffect(
+      () => {
+        chassisApi.velocity.subscribe((velocity) => {
+            const speed = v.set(...velocity).length()
+            setSpeed(Math.round(speed * 25))
+          })
+      },
+      [chassisApi]
+    )
 
-  // //   useEffect(() => {
-  // //     setState({ api })
-  // //     return () => setState({ api: null })
-  // //   }, [api])
-
-  //   useLayoutEffect(
-  //     () =>
-  //       api.velocity.subscribe((velocity) => {
-  //         console.log({velocity})
-  //         // const speed = v.set(...velocity).length()
-  //         // const gearPosition = speed / (maxSpeed / gears)
-  //         // const rpmTarget = Math.max(((gearPosition % 1) + Math.log(gearPosition)) / 6, 0)
-
-  //         // Object.assign(mutation, { rpmTarget, speed, velocity })
-  //       }),
-  //     [api],
-  //   )
+    console.log({speed})
 
   return (
     <group ref={vehicle} name="vehicle">

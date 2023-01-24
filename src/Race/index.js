@@ -4,8 +4,10 @@ import { Scene } from "./Scene";
 import { Physics } from "@react-three/cannon";
 import { useEffect } from "react";
 import { Box } from "@mui/material";
+import { useCardDataContext } from "../Providers/CarContext";
 
 export function Race({carSelected}) {
+  const {speed} = useCardDataContext()
   useEffect(() => {
     console.log("WOOO");
   }, []);
@@ -17,6 +19,9 @@ export function Race({carSelected}) {
       <Physics broadphase={"SAP"} friction={1e-3} gravity={[0, -1.6, 0]}>
         <Scene vehicleSpecs={carSelected?.metadata} />
       </Physics>
-    </Canvas>¡
+    </Canvas>
+    <Box sx={{position: 'relative', top: '-64px', fontSize: '32px', color: "white", left: "24px"}}>
+      {speed} MPH
+    </Box>
 </Box>)
 }
