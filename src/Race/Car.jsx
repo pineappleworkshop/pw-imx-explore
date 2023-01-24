@@ -6,13 +6,13 @@ import { useWheels } from './useWheels'
 import { WheelDebug } from './WheelDebug'
 import { useControls } from './useControls'
 import { Quaternion, Vector3 } from 'three'
-import { useCardDataContext } from '../Providers/CarContext'
+import { useCarDataContext } from '../Providers/CarContext'
 
 export function Car({ thirdPerson, vehicleSpecs, position = [-1.5, 0.5, 3] }) {
   // thanks to the_86_guy!
   // https://sketchfab.com/3d-models/low-poly-car-muscle-car-2-ac23acdb0bd54ab38ea72008f3312861
 
-const {speed, setSpeed }  = useCardDataContext()
+const {speed, setSpeed }  = useCarDataContext()
 
   function generateVehicleName(name) {
     if (name === 'Green Lambo') {
@@ -122,8 +122,6 @@ const {speed, setSpeed }  = useCardDataContext()
       },
       [chassisApi]
     )
-
-    console.log({speed})
 
   return (
     <group ref={vehicle} name="vehicle">
