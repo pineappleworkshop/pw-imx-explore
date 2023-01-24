@@ -1,4 +1,4 @@
-import {useBox} from "@react-three/cannon";
+ import {useBox} from "@react-three/cannon";
 import { useCallback } from "react";
 const debug = false
 

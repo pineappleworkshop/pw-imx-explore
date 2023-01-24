@@ -4,7 +4,6 @@ import { Scene } from "./Scene";
 import { Physics } from "@react-three/cannon";
 import { useEffect } from "react";
 import { Box } from "@mui/material";
-import { useCardDataContext } from "../Providers/CarContext";
 import Speed from "./Speed";
 
 export function Race({carSelected}) {

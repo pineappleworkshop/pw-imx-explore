@@ -1,5 +1,7 @@
 import { useFrame, useLoader } from '@react-three/fiber'
-import { useEffect, useRef, useState,useLayoutEffect } from 'react'
+import debounce from 'lodash-es/debounce'
+import clamp from 'lodash-es/clamp'
+import { useEffect, useRef, useState,useLayoutEffect, useCallback } from 'react'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { useBox, useRaycastVehicle } from '@react-three/cannon'
 import { useWheels } from './useWheels'
@@ -7,12 +9,14 @@ import { WheelDebug } from './WheelDebug'
 import { useControls } from './useControls'
 import { Quaternion, Vector3 } from 'three'
 import { useCarDataContext } from '../Providers/CarContext'
+import { PositionalAudio } from '@react-three/drei'
 
 export function Car({ thirdPerson, vehicleSpecs, position = [-1.5, 0.5, 3] }) {
   // thanks to the_86_guy!
   // https://sketchfab.com/3d-models/low-poly-car-muscle-car-2-ac23acdb0bd54ab38ea72008f3312861
 
 const {speed, setSpeed }  = useCarDataContext()
+const crashAudio = useRef(null)
 
   function generateVehicleName(name) {
     if (name === 'Green Lambo') {
@@ -63,11 +67,23 @@ const {speed, setSpeed }  = useCarDataContext()
   const wheelRadius = 0.1
 
   const chassisBodyArgs = [width, height, front * 2]
+
+  const onCollide = useCallback((e) => {
+
+    console.log("COLLISION", e.contact.impactVelocity)
+    //   if (e.body.userData.trigger || !getState().sound || !crashAudio.current) return
+    console.log("CLAMP", clamp(e.contact.impactVelocity, 0.1, 1))
+      crashAudio.current.setVolume(clamp(e.contact.impactVelocity, 0.1, 1))
+      if (!crashAudio.current.isPlaying) crashAudio.current.play()
+    }, [])
+
+
   const [chassisBody, chassisApi] = useBox(
     () => ({
       args: chassisBodyArgs,
       mass: 150,
       position,
+      onCollide
     }),
     useRef(null)
   )
@@ -124,6 +140,7 @@ const {speed, setSpeed }  = useCarDataContext()
     )
 
   return (
+    <>
     <group ref={vehicle} name="vehicle">
       <group ref={chassisBody} name="chassisBody">
         <primitive
@@ -141,5 +158,9 @@ const {speed, setSpeed }  = useCarDataContext()
       <WheelDebug wheelRef={wheels[2]} radius={wheelRadius} />
       <WheelDebug wheelRef={wheels[3]} radius={wheelRadius} />
     </group>
+    <PositionalAudio
+        ref={crashAudio} 
+        url="/sounds/crash.mp3" loop={false} distance={5} />
+        </>
   )
 }

@@ -4,6 +4,7 @@ import {TextureLoader} from "three";
 import {useEffect} from "react";
 import {ColliderBox} from "./ColliderBox";
 import {Ramp} from "./Ramp";
+import { PositionalAudio } from "@react-three/drei";
 
 
 export function Track(){
