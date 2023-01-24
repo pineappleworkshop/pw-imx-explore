@@ -15,6 +15,7 @@ import NftTruckList from '../../NftTruckList'
 import NftTireList from '../../NftTireList'
 import InventoryStats from './InventoryStats'
 import TransferCar from './TransferCar'
+import ListCarForSale from './ListCarForSale'
 require('dotenv').config()
 
 interface InventoryProps {
@@ -133,22 +134,6 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
   }
 
   // sell an asset
-  async function sellCar() {
-    await link.sell({
-      amount: sellAmount,
-      tokenId: sellTokenId,
-      tokenAddress: car_token_address,
-    })
-    setInventory(
-      await client.getAssets({
-        user: wallet,
-        sell_orders: true,
-        collection: car_token_address,
-      })
-    )
-    setSellAmount('')
-    setSellTokenId('')
-  }
 
   async function sellTruck() {
     await link.sell({
@@ -341,7 +326,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       })
     )
   }
-  console.log({ inventory })
+
   return (
     <Container>
       <InventoryStats
@@ -362,58 +347,16 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
           setInventory={setInventory}
           wallet={wallet}
         />
-        <Box>
-          <Typography
-            sx={{
-              fontFamily: 'Alegreya Sans SC',
-              fontSize: '1rem',
-              color: 'peachpuff',
-            }}
-          >
-            List Car For Sale:
-          </Typography>
-          <label style={{ fontFamily: 'Alegreya Sans SC', color: 'peachpuff' }}>
-            Car ID:
-            <input
-              style={{
-                borderRadius: 5,
-                maxWidth: 100,
-                border: '2px solid peachpuff',
-              }}
-              type="text"
-              value={sellTokenId}
-              onChange={(e) => setSellTokenId(e.target.value)}
-            />
-          </label>
-          <label style={{ color: 'peachpuff' }}>
-            Price (ETH):
-            <input
-              style={{
-                borderRadius: 5,
-                maxWidth: 100,
-                border: '2px solid peachpuff',
-              }}
-              type="text"
-              value={sellAmount}
-              onChange={(e) => setSellAmount(e.target.value)}
-            />
-          </label>
-
-          <Button
-            variant="contained"
-            size="small"
-            onClick={sellCar}
-            style={{
-              fontFamily: 'Alegreya Sans SC',
-              margin: 2,
-              borderRadius: 5,
-              color: 'black',
-              backgroundColor: 'peachpuff',
-            }}
-          >
-            List
-          </Button>
-        </Box>
+        <ListCarForSale
+          sellTokenId={sellTokenId}
+          setSellTokenId={setSellTokenId}
+          sellAmount={sellAmount}
+          setSellAmount={setSellAmount}
+          link={link}
+          setInventory={setInventory}
+          client={client}
+          wallet={wallet}
+        />
       </Stack>
       {monsterTruckInventory?.result?.length > 0 && (
         <Typography
@@ -431,7 +374,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       )}
       {monsterTruckInventory?.result?.length > 0 && (
         <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
-          <Box>
+          <Box component="div">
             <Typography
               sx={{
                 fontFamily: 'Alegreya Sans SC',
@@ -485,7 +428,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
               Transfer
             </Button>
           </Box>
-          <Box>
+          <Box component="div">
             <Typography
               sx={{
                 fontFamily: 'Alegreya Sans SC',
@@ -557,7 +500,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       )}
       {tireInventory?.result?.length > 0 && (
         <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
-          <Box>
+          <Box component="div">
             <Typography
               sx={{
                 fontFamily: 'Alegreya Sans SC',
@@ -611,7 +554,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
               Transfer
             </Button>
           </Box>
-          <Box>
+          <Box component="div">
             <Typography
               sx={{
                 fontFamily: 'Alegreya Sans SC',

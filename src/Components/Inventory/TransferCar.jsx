@@ -1,7 +1,7 @@
 import { Typography, Stack, Box, Button } from '@mui/material/'
 import { ERC721TokenType } from '@imtbl/imx-sdk'
 
-const TransferCar = (
+const TransferCar = ({
   transferTokenId,
   setTransferTokenId,
   recipientAddress,
@@ -9,8 +9,8 @@ const TransferCar = (
   setInventory,
   link,
   client,
-  wallet
-) => {
+  wallet,
+}) => {
   const car_token_address = process.env.REACT_APP_SPEEDCAR_TOKEN_ADDRESS ?? '' // contract registered by Immutable
   // transfer an asset
   async function transferCar() {
@@ -43,7 +43,7 @@ const TransferCar = (
   }
 
   return (
-    <Box>
+    <Box sx={{ display: 'flex', flexDirection: 'column', width: '40%' }}>
       <Typography
         sx={{
           fontFamily: 'Alegreya Sans SC',
@@ -53,40 +53,42 @@ const TransferCar = (
       >
         Transfer Car:
       </Typography>
-      <label style={{ fontFamily: 'Alegreya Sans SC', color: 'deepskyblue' }}>
-        Car ID:
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <label style={{ fontFamily: 'Alegreya Sans SC', color: 'deepskyblue' }}>
+          Car ID:
+        </label>
         <input
           style={{
             borderRadius: 5,
-            maxWidth: 100,
+
             border: '2px solid deepskyblue',
           }}
           type="text"
           value={transferTokenId}
           onChange={(e) => setTransferTokenId(e.target.value)}
         />
-      </label>
-      <label style={{ color: 'deepskyblue' }}>
-        To:
+      </Box>
+
+      <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: '16px' }}>
+        <label style={{ color: 'deepskyblue' }}>To:</label>
         <input
           style={{
             borderRadius: 5,
-            maxWidth: 100,
+
             border: '2px solid deepskyblue',
           }}
           type="text"
           value={recipientAddress}
           onChange={(e) => setRecipientAddress(e.target.value)}
         />
-      </label>
-
+      </Box>
       <Button
         variant="contained"
         size="small"
         onClick={transferCar}
         style={{
           fontFamily: 'Alegreya Sans SC',
-          margin: 2,
+          marginTop: '20px',
           borderRadius: 5,
           color: 'black',
           backgroundColor: 'deepskyblue',

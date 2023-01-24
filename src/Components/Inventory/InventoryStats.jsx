@@ -1,6 +1,10 @@
 import { Typography, Stack } from '@mui/material/'
 
-const InventoryStats = (inventory, monsterTruckInventory, tireInventory) => {
+const InventoryStats = ({
+  inventory,
+  monsterTruckInventory,
+  tireInventory,
+}) => {
   return (
     <Stack
       direction="row"
