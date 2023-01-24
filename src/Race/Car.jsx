@@ -1,7 +1,7 @@
 import { useFrame, useLoader } from '@react-three/fiber'
 import debounce from 'lodash-es/debounce'
 import clamp from 'lodash-es/clamp'
-import { useEffect, useRef, useState,useLayoutEffect, useCallback } from 'react'
+import { useEffect, useRef, useState, useLayoutEffect, useCallback } from 'react'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { useBox, useRaycastVehicle } from '@react-three/cannon'
 import { useWheels } from './useWheels'
@@ -10,13 +10,19 @@ import { useControls } from './useControls'
 import { Quaternion, Vector3 } from 'three'
 import { useCarDataContext } from '../Providers/CarContext'
 import { PositionalAudio } from '@react-three/drei'
+import { AccelerateAudio } from './effects/Accelerate'
+import { EngineAudio } from './effects/Engine'
+
 
 export function Car({ thirdPerson, vehicleSpecs, position = [-1.5, 0.5, 3] }) {
   // thanks to the_86_guy!
   // https://sketchfab.com/3d-models/low-poly-car-muscle-car-2-ac23acdb0bd54ab38ea72008f3312861
 
-const {speed, setSpeed }  = useCarDataContext()
+const {speed, setSpeed, setRpmTarget }  = useCarDataContext()
+const engineAudio = useRef(null)
 const crashAudio = useRef(null)
+const accelerateAudio = useRef(null)
+
 
   function generateVehicleName(name) {
     if (name === 'Green Lambo') {
@@ -70,9 +76,8 @@ const crashAudio = useRef(null)
 
   const onCollide = useCallback((e) => {
 
-    console.log("COLLISION", e.contact.impactVelocity)
+
     //   if (e.body.userData.trigger || !getState().sound || !crashAudio.current) return
-    console.log("CLAMP", clamp(e.contact.impactVelocity, 0.1, 1))
       crashAudio.current.setVolume(clamp(e.contact.impactVelocity, 0.1, 1))
       if (!crashAudio.current.isPlaying) crashAudio.current.play()
     }, [])
@@ -129,11 +134,21 @@ const crashAudio = useRef(null)
 
   const v = new Vector3()
 
+//   const ToggledAccelerateAudio = useToggle(AccelerateAudio, ['ready', 'sound'])
+
+
     useLayoutEffect(
       () => {
         chassisApi.velocity.subscribe((velocity) => {
             const speed = v.set(...velocity).length()
-            setSpeed(Math.round(speed * 25))
+
+            const rounded = Math.round(speed * 25)
+            const maxSpeed = 100
+            const gears = 5
+            const gearPosition = speed / gears * 100
+            const rpmTarget = Math.max(((gearPosition % 1) + Math.log(gearPosition)) / 6, 0)
+            setRpmTarget(rpmTarget)
+            setSpeed(rounded)
           })
       },
       [chassisApi]
@@ -161,6 +176,8 @@ const crashAudio = useRef(null)
     <PositionalAudio
         ref={crashAudio} 
         url="/sounds/crash.mp3" loop={false} distance={5} />
+    <AccelerateAudio/>
+    <EngineAudio/>
         </>
   )
 }
