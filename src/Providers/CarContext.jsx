@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from "react";
 
 const CarDataContext = createContext(null);
 
-const useCardDataContext = () => useContext(CarDataContext);
+const useCarDataContext = () => useContext(CarDataContext);
 
 function CarDataProvider({ children }) {
 const [speed, setSpeed] = useState(0)
@@ -20,4 +20,4 @@ const [speed, setSpeed] = useState(0)
   );
 }
 
-export { CarDataProvider, useCardDataContext };
+export { CarDataProvider, useCarDataContext };
