@@ -16,6 +16,7 @@ import NftTireList from '../../NftTireList'
 import InventoryStats from './InventoryStats'
 import TransferCar from './TransferCar'
 import ListCarForSale from './ListCarForSale'
+import TransferForm from '../TransferForm'
 require('dotenv').config()
 
 interface InventoryProps {
@@ -337,7 +338,9 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
       {false && <NftList nfts={inventory.result} />}
       <CarNftList nfts={inventory?.result} />
       <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
-        <TransferCar
+        <TransferForm
+          type="Car"
+          formAction="Transfer"
           transferTokenId={transferTokenId}
           setTransferTokenId={setTransferTokenId}
           recipientAddress={recipientAddress}
@@ -347,6 +350,7 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
           setInventory={setInventory}
           wallet={wallet}
         />
+
         <ListCarForSale
           sellTokenId={sellTokenId}
           setSellTokenId={setSellTokenId}

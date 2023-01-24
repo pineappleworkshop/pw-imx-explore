@@ -30,7 +30,10 @@ const ListCarForSale = ({
   }
 
   return (
-    <Box component="div">
+    <Box
+      component="div"
+      sx={{ display: 'flex', flexDirection: 'column', width: '40%' }}
+    >
       <Typography
         sx={{
           fontFamily: 'Alegreya Sans SC',
@@ -40,32 +43,34 @@ const ListCarForSale = ({
       >
         List Car For Sale:
       </Typography>
-      <label style={{ fontFamily: 'Alegreya Sans SC', color: 'peachpuff' }}>
-        Car ID:
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <label style={{ fontFamily: 'Alegreya Sans SC', color: 'peachpuff' }}>
+          Car ID:
+        </label>
         <input
           style={{
             borderRadius: 5,
-            maxWidth: 100,
+
             border: '2px solid peachpuff',
           }}
           type="text"
           value={sellTokenId}
           onChange={(e) => setSellTokenId(e.target.value)}
         />
-      </label>
-      <label style={{ color: 'peachpuff' }}>
-        Price (ETH):
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: '16px' }}>
+        <label style={{ color: 'peachpuff' }}>Price (ETH):</label>
         <input
           style={{
             borderRadius: 5,
-            maxWidth: 100,
+
             border: '2px solid peachpuff',
           }}
           type="text"
           value={sellAmount}
           onChange={(e) => setSellAmount(e.target.value)}
         />
-      </label>
+      </Box>
 
       <Button
         variant="contained"
@@ -73,7 +78,7 @@ const ListCarForSale = ({
         onClick={sellCar}
         style={{
           fontFamily: 'Alegreya Sans SC',
-          margin: 2,
+          marginTop: '20px',
           borderRadius: 5,
           color: 'black',
           backgroundColor: 'peachpuff',
