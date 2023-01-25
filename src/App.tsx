@@ -7,6 +7,7 @@ import Inventory from "./Inventory";
 import Racetrack from "./Racetrack";
 import Chopshop from "./Chopshop";
 import { Race } from "./Race";
+import { CarDataProvider } from "./Providers/CarContext";
 // import { Race } from "./Race";
 
 require("dotenv").config();
@@ -99,6 +100,7 @@ const App = () => {
   }
 
   return (
+    <CarDataProvider>
     <div className="App bg-img">
       <Stack direction="row" sx={{ p: 5, justifyContent: "space-around" }}>
         <Stack maxWidth={1 / 10}>
@@ -218,6 +220,7 @@ const App = () => {
       <br />
       {handleTabs()}
     </div>
+    </CarDataProvider>
   );
 };
 
