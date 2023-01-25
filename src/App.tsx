@@ -4,6 +4,7 @@ import './App.css'
 import { TransferProvider } from './Contexts/TransferContext'
 import { ImutableXProvider } from './Contexts/ImutableXContext'
 import HeaderNav from './Components/HeaderNav'
+import { CarDataProvider } from './Providers/CarContext'
 
 require('dotenv').config()
 
@@ -11,12 +12,14 @@ const App = () => {
   return (
     <ImutableXProvider>
       <TransferProvider>
-        <div className="App bg-img">
-          <HeaderNav />
+        <CarDataProvider>
+          <div className="App bg-img">
+            <HeaderNav />
 
-          {/* <div>Active wallet: {wallet}</div>
+            {/* <div>Active wallet: {wallet}</div>
       <div>ETH balance (in wei): {balance?.balance?.toString()}</div> */}
-        </div>
+          </div>
+        </CarDataProvider>
       </TransferProvider>
     </ImutableXProvider>
   )
