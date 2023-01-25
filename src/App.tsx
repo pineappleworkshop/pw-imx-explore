@@ -2,10 +2,7 @@ import './App.css'
 
 // import { Race } from "./Race";
 import { TransferProvider } from './Contexts/TransferContext'
-import {
-  ImutableXProvider,
-  useImutableXContext,
-} from './Contexts/ImutableXContext'
+import { ImutableXProvider } from './Contexts/ImutableXContext'
 import HeaderNav from './Components/HeaderNav'
 
 require('dotenv').config()

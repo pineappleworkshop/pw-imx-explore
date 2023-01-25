@@ -9,8 +9,7 @@ import Racetrack from '../Racetrack'
 import Chopshop from '../Chopshop'
 
 const HeaderNav = () => {
-  const { wallet, balance, client, link, disconnect, linkSetup } =
-    useImutableXContext()
+  const { wallet, client, link, disconnect, linkSetup } = useImutableXContext()
   const [tab, setTab] = useState('marketplace')
 
   function handleTabs() {
@@ -34,68 +33,46 @@ const HeaderNav = () => {
     }
     return null
   }
-  console.log({ tab })
+
   return (
     <Stack direction="column" sx={{ p: 5 }}>
-      <Stack direction="row" alignItems="center" justifyContent="center">
-        <Typography
-          variant="h1"
-          component="div"
-          align="center"
-          sx={{
-            fontFamily: 'Bebas Neue',
-            color: 'red',
-            fontSize: '36px',
-            fontWeight: '700',
-            textTransform: 'uppercase',
-          }}
-        >
-          RocketCarGarage
-        </Typography>
-        <Button
-          variant="contained"
-          size="small"
-          sx={{
-            marginLeft: 'auto',
-            height: '40px',
-            fontFamily: 'Alegreya Sans SC',
-            fontSize: '1rem',
-            color: 'black',
-            backgroundColor: 'cyan',
-          }}
-          onClick={wallet ? disconnect : linkSetup}
-        >
-          {wallet ? 'Disconnect' : 'Connect'}
-        </Button>
-      </Stack>
+      <Typography
+        variant="h1"
+        component="div"
+        align="center"
+        sx={{
+          fontFamily: 'Bebas Neue',
+          color: 'white',
+          fontSize: '36px',
+          fontWeight: '700',
+        }}
+      >
+        RocketCarGarage
+      </Typography>
 
       <Stack
         direction="row"
         alignItems="center"
         justifyContent="center"
-        sx={{ gap: 20, marginTop: '20px' }}
+        sx={{ gap: 20 }}
       >
         <Button
-          variant="contained"
-          size="small"
           sx={{
-            fontFamily: 'Alegreya Sans SC',
-            fontSize: '1rem',
-            color: 'black',
-            backgroundColor: 'cyan',
+            fontFamily: 'Inter',
+            fontSize: '16px',
+            fontWeight: '500',
+            color: 'white',
           }}
           onClick={() => setTab('marketplace')}
         >
           Marketplace
         </Button>
         <Button
-          variant="contained"
-          size="small"
           sx={{
-            fontFamily: 'Alegreya Sans SC',
-            fontSize: '1rem',
-            color: 'black',
-            backgroundColor: 'cyan',
+            fontFamily: 'Inter',
+            fontSize: '16px',
+            fontWeight: '500',
+            color: 'white',
           }}
           onClick={() => setTab('inventory')}
         >
@@ -103,26 +80,22 @@ const HeaderNav = () => {
         </Button>
         {/* <button onClick={() => setTab("bridging")}>Deposit and withdrawal</button> */}
         <Button
-          variant="contained"
-          size="small"
           sx={{
-            fontFamily: 'Alegreya Sans SC',
-            fontSize: '1rem',
-            color: 'black',
-            backgroundColor: 'cyan',
+            fontFamily: 'Inter',
+            fontSize: '16px',
+            fontWeight: '500',
+            color: 'white',
           }}
           onClick={() => setTab('racetrack')}
         >
           Race Track
         </Button>
         <Button
-          variant="contained"
-          size="small"
           sx={{
-            fontFamily: 'Alegreya Sans SC',
-            fontSize: '1rem',
-            color: 'black',
-            backgroundColor: 'cyan',
+            fontFamily: 'Inter',
+            fontSize: '16px',
+            fontWeight: '500',
+            color: 'white',
           }}
           onClick={() => setTab('chopshop')}
         >
@@ -130,6 +103,20 @@ const HeaderNav = () => {
         </Button>
       </Stack>
       <WalletInfo />
+
+      <Button
+        sx={{
+          marginLeft: 'auto',
+          height: '40px',
+          fontFamily: 'Inter',
+          fontSize: '16px',
+          fontWeight: '500',
+          color: 'white',
+        }}
+        onClick={wallet ? disconnect : linkSetup}
+      >
+        {wallet ? 'Disconnect' : 'Connect'}
+      </Button>
       {handleTabs()}
     </Stack>
   )
