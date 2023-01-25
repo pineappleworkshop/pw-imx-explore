@@ -20,15 +20,12 @@
 }
 
 .bg-img {
-
-  background-image: url(./assets/race-bak.jpg);
+  background-image: url(./assets/garageBG.png);
   height: 100%;
   overflow: auto;
   width: 100%;
   background-size: cover;
   background-repeat: no-repeat;
-
-
 }
 
 body {
