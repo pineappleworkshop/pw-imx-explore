@@ -67,7 +67,7 @@ const accelerateAudio = useRef(null)
   const positionY = carOptions[vehicleName].positionY
 
   // const position =
-  const width = 0.3
+  const width = 0.15
   const height = 0.07
   const front = 0.15
   const wheelRadius = 0.1

@@ -1,9 +1,9 @@
-import { Box, ImageList, ImageListItem } from "@mui/material/";
-import NftCard from "./NftCard";
+import { Box, ImageList, ImageListItem } from '@mui/material/'
+import NftCard from '../../NftCard'
 // import './zillaList.css'
 
 const NftList = (props) => {
-  console.log('apa',props)
+  console.log('apa', props)
   return (
     <Box minWidth={5 / 5}>
       <ImageList cols={4} rowHeight="auto" sx={{ p: 1, pt: 1 }} gap={20}>
@@ -14,7 +14,7 @@ const NftList = (props) => {
         ))}
       </ImageList>
     </Box>
-  );
-};
+  )
+}
 
-export default NftList;
+export default NftList
