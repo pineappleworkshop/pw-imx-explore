@@ -1,10 +1,9 @@
-import './App.css'
-
+import "./App.css";
+import { CarDataProvider } from "./Providers/CarContext";
 // import { Race } from "./Race";
 import { TransferProvider } from './Contexts/TransferContext'
 import { ImutableXProvider } from './Contexts/ImutableXContext'
 import HeaderNav from './Components/HeaderNav'
-import { CarDataProvider } from './Providers/CarContext'
 
 require('dotenv').config()
 
