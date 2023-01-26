@@ -58,7 +58,7 @@ function ImutableXProvider(props: Props) {
     const publicApiUrl: string = process.env.REACT_APP_SANDBOX_ENV_URL ?? ''
     setClient(await ImmutableXClient.build({ publicApiUrl }))
   }
-
+  console.log('context', { client })
   // register and/or setup a user
   async function linkSetup(): Promise<void> {
     const res: any = await link.setup({})

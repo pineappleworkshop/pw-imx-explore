@@ -13,6 +13,7 @@ import { Typography, Stack, Box, Button, Container } from '@mui/material/'
 import CarNftList from './Components/Inventory/CarNftList'
 import NftCarCard from './NftCarCard'
 import { Race } from './Race'
+import { useImutableXContext } from './Contexts/ImutableXContext'
 require('dotenv').config()
 
 interface InventoryProps {
@@ -23,8 +24,9 @@ interface InventoryProps {
 
 const config = Config.SANDBOX // Or Config.PRODUCTION
 const clientCore = new ImmutableX(config)
-
-const Racetrack = ({ client, link, wallet }: InventoryProps) => {
+//{ client, link, wallet }: InventoryProps
+const Racetrack = () => {
+  const { client, link, wallet } = useImutableXContext()
   const [inventory, setInventory] =
     useState<ImmutableMethodResults.ImmutableGetAssetsResult>(Object)
 
