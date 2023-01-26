@@ -1,11 +1,15 @@
 import { NavLink } from 'react-router-dom'
 import { useState } from 'react'
-import { Button, Stack, Typography, Box } from '@mui/material/'
+import { Button, Stack, Typography } from '@mui/material/'
 import { useImutableXContext } from '../Contexts/ImutableXContext'
+import { HiOutlineShoppingCart } from 'react-icons/hi'
+import WalletInfo from './WalletInfo'
 
 const HeaderNav = () => {
   const { wallet, disconnect, linkSetup } = useImutableXContext()
   let activeStyle = {
+    display: 'flex',
+    alignItems: 'center',
     textDecorationColor: 'red',
     textDecorationThickness: '3px',
     textUnderlinePosition: 'under',
@@ -14,6 +18,8 @@ const HeaderNav = () => {
   }
 
   let inactiveStyle = {
+    display: 'flex',
+    alignItems: 'center',
     textDecoration: 'none',
     color: '#525252',
   }
@@ -51,6 +57,9 @@ const HeaderNav = () => {
                   isActive ? activeStyle : inactiveStyle
                 }
               >
+                <span style={{ marginRight: '8px' }}>
+                  <HiOutlineShoppingCart />
+                </span>
                 <Typography
                   sx={{
                     fontFamily: 'Inter',
@@ -58,10 +67,6 @@ const HeaderNav = () => {
                     fontWeight: '500',
                   }}
                 >
-                  <img
-                    src={require('../assets/market_place.svg')}
-                    alt="marketPlace"
-                  />
                   Marketplace
                 </Typography>
               </NavLink>
@@ -122,10 +127,9 @@ const HeaderNav = () => {
             </li>
           </ul>
         </nav>
+        {wallet && <WalletInfo />}
 
-        {/* <WalletInfo /> */}
-
-        <Button
+        <Typography
           sx={{
             marginLeft: 'auto',
             height: '40px',
@@ -133,13 +137,16 @@ const HeaderNav = () => {
             fontSize: '16px',
             fontWeight: '500',
             color: 'white',
+            cursor: 'pointer',
+            '&:hover': {
+              color: 'red',
+            },
           }}
           onClick={wallet ? disconnect : linkSetup}
         >
           {wallet ? 'Disconnect' : 'Connect'}
-        </Button>
+        </Typography>
       </Stack>
-      {/* {handleTabs()} */}
     </Stack>
   )
 }
