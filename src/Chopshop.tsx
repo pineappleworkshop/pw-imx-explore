@@ -13,21 +13,23 @@ import { Typography, Stack, Box, Button, Container } from '@mui/material/'
 import CarNftList from './Components/Inventory/CarNftList'
 import NftCarCard from './NftCarCard'
 import NftTireList from './NftTireList'
+import { useImutableXContext } from './Contexts/ImutableXContext'
 require('dotenv').config()
 
-interface InventoryProps {
-  client: ImmutableXClient
-  link: Link
-  wallet: string
-}
+// interface InventoryProps {
+//   client: ImmutableXClient
+//   link: Link
+//   wallet: string
+// }
 
 // Initialize Link
 let link = new Link('https://link.sandbox.x.immutable.com')
 
 const config = Config.SANDBOX // Or Config.PRODUCTION
 const clientCore = new ImmutableX(config)
-
-const Chopshop = ({ client, wallet }: InventoryProps) => {
+//{ client, wallet }: InventoryProps
+const Chopshop = () => {
+  const { client, wallet } = useImutableXContext()
   const [inventory, setInventory] =
     useState<ImmutableMethodResults.ImmutableGetAssetsResult>(Object)
   const [tireInventory, setTireInventory] =
@@ -318,8 +320,6 @@ const Chopshop = ({ client, wallet }: InventoryProps) => {
       {tireInventory?.result?.length > 0 && (
         <NftTireList nfts={tireInventory?.result} />
       )}
-
-      <Box sx={{ height: '80vh' }}></Box>
     </Container>
   )
 }

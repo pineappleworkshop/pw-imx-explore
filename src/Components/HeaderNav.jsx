@@ -1,123 +1,161 @@
-import { useEffect, useState } from 'react'
-
-import { Button, Stack, Typography, Box } from '@mui/material/'
+import { NavLink } from 'react-router-dom'
+import { useState } from 'react'
+import { Button, Stack, Typography } from '@mui/material/'
 import { useImutableXContext } from '../Contexts/ImutableXContext'
+import { HiOutlineShoppingCart } from 'react-icons/hi'
+import { AiOutlinePoweroff } from 'react-icons/ai'
 import WalletInfo from './WalletInfo'
-import Marketplace from '../Marketplace'
-import Inventory from '../Components/Inventory'
-import Racetrack from '../Racetrack'
-import Chopshop from '../Chopshop'
 
 const HeaderNav = () => {
-  const { wallet, client, link, disconnect, linkSetup } = useImutableXContext()
-  const [tab, setTab] = useState('marketplace')
+  const { wallet, disconnect, linkSetup } = useImutableXContext()
+  let activeStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    textDecorationColor: 'red',
+    textDecorationThickness: '3px',
+    textUnderlinePosition: 'under',
+    textUnderlineOffset: '8px',
+    color: 'white',
+  }
 
-  function handleTabs() {
-    if (client.address) {
-      switch (tab) {
-        case 'inventory':
-          if (wallet === undefined) return <div>Connect wallet</div>
-          return <Inventory client={client} link={link} wallet={wallet} />
-        case 'racetrack':
-          if (wallet === undefined) return <div>Connect wallet</div>
-          return <Racetrack client={client} link={link} wallet={wallet} />
-        case 'chopshop':
-          if (wallet === undefined) return <div>Connect wallet</div>
-          return <Chopshop client={client} link={link} wallet={wallet} />
-        // case "bridging":
-        //   if (wallet === undefined) return <div>Connect wallet</div>;
-        //   return <Bridging client={client} link={link} wallet={wallet} />;
-        default:
-          return <Marketplace client={client} link={link} />
-      }
-    }
-    return null
+  let inactiveStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    textDecoration: 'none',
+    color: '#525252',
   }
 
   return (
     <Stack direction="column" sx={{ p: 5 }}>
-      <Typography
-        variant="h1"
-        component="div"
-        align="center"
-        sx={{
-          fontFamily: 'Bebas Neue',
-          color: 'white',
-          fontSize: '36px',
-          fontWeight: '700',
-        }}
-      >
-        RocketCarGarage
-      </Typography>
+      <Stack direction="row" alignItems="center">
+        <Typography
+          variant="h1"
+          component="div"
+          align="center"
+          sx={{
+            fontFamily: 'Bebas Neue',
+            color: 'white',
+            fontSize: '36px',
+            fontWeight: '700',
+          }}
+        >
+          RocketCarGarage
+        </Typography>
 
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        sx={{ gap: 20 }}
-      >
-        <Button
-          sx={{
-            fontFamily: 'Inter',
-            fontSize: '16px',
-            fontWeight: '500',
-            color: 'white',
-          }}
-          onClick={() => setTab('marketplace')}
+        <nav style={{ marginLeft: '83px' }}>
+          <ul
+            style={{
+              listStyleType: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '40px',
+              marginTop: '10px',
+            }}
+          >
+            <li>
+              <NavLink
+                to="/"
+                style={({ isActive }) =>
+                  isActive ? activeStyle : inactiveStyle
+                }
+              >
+                <span style={{ marginRight: '8px' }}>
+                  <HiOutlineShoppingCart />
+                </span>
+                <Typography
+                  sx={{
+                    fontFamily: 'Inter',
+                    fontSize: '16px',
+                    fontWeight: '500',
+                  }}
+                >
+                  Marketplace
+                </Typography>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/inventory"
+                style={({ isActive }) =>
+                  isActive ? activeStyle : inactiveStyle
+                }
+              >
+                <Typography
+                  sx={{
+                    fontFamily: 'Inter',
+                    fontSize: '16px',
+                    fontWeight: '500',
+                  }}
+                >
+                  Inventory
+                </Typography>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/racetrack"
+                style={({ isActive }) =>
+                  isActive ? activeStyle : inactiveStyle
+                }
+              >
+                <Typography
+                  sx={{
+                    fontFamily: 'Inter',
+                    fontSize: '16px',
+                    fontWeight: '500',
+                  }}
+                >
+                  Race Track
+                </Typography>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/chopshop"
+                style={({ isActive }) =>
+                  isActive ? activeStyle : inactiveStyle
+                }
+              >
+                <Typography
+                  sx={{
+                    fontFamily: 'Inter',
+                    fontSize: '16px',
+                    fontWeight: '500',
+                  }}
+                >
+                  Chop Shop
+                </Typography>
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+        <Stack
+          direction="row"
+          alignItems="center"
+          sx={{ marginLeft: 'auto', gap: '16px' }}
         >
-          Marketplace
-        </Button>
-        <Button
-          sx={{
-            fontFamily: 'Inter',
-            fontSize: '16px',
-            fontWeight: '500',
-            color: 'white',
-          }}
-          onClick={() => setTab('inventory')}
-        >
-          Inventory
-        </Button>
-        {/* <button onClick={() => setTab("bridging")}>Deposit and withdrawal</button> */}
-        <Button
-          sx={{
-            fontFamily: 'Inter',
-            fontSize: '16px',
-            fontWeight: '500',
-            color: 'white',
-          }}
-          onClick={() => setTab('racetrack')}
-        >
-          Race Track
-        </Button>
-        <Button
-          sx={{
-            fontFamily: 'Inter',
-            fontSize: '16px',
-            fontWeight: '500',
-            color: 'white',
-          }}
-          onClick={() => setTab('chopshop')}
-        >
-          Chop Shop
-        </Button>
+          {wallet && <WalletInfo />}
+
+          <Typography
+            sx={{
+              marginLeft: 'auto',
+              height: '40px',
+              fontFamily: 'Inter',
+              fontSize: '16px',
+              fontWeight: '500',
+              color: 'white',
+              cursor: 'pointer',
+              marginTop: '10px',
+              '&:hover': {
+                color: 'red',
+              },
+            }}
+            onClick={wallet ? disconnect : linkSetup}
+          >
+            {wallet ? <AiOutlinePoweroff /> : 'Connect'}
+          </Typography>
+        </Stack>
       </Stack>
-      <WalletInfo />
-
-      <Button
-        sx={{
-          marginLeft: 'auto',
-          height: '40px',
-          fontFamily: 'Inter',
-          fontSize: '16px',
-          fontWeight: '500',
-          color: 'white',
-        }}
-        onClick={wallet ? disconnect : linkSetup}
-      >
-        {wallet ? 'Disconnect' : 'Connect'}
-      </Button>
-      {handleTabs()}
     </Stack>
   )
 }

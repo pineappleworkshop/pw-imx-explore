@@ -16,15 +16,17 @@ import NftTireList from '../../NftTireList'
 import InventoryStats from './InventoryStats'
 import TransferForm from '../TransferForm'
 import ListCarForSale from './ListCarForSale'
+import { useImutableXContext } from '../../Contexts/ImutableXContext'
 require('dotenv').config()
 
-interface InventoryProps {
-  client: ImmutableXClient
-  link: Link
-  wallet: string
-}
-
-const Inventory = ({ client, link, wallet }: InventoryProps) => {
+// interface InventoryProps {
+//   client: ImmutableXClient
+//   link: Link
+//   wallet: string
+// }
+//{ client, link, wallet }: InventoryProps
+const Inventory = () => {
+  const { client, link, wallet } = useImutableXContext()
   const [inventory, setInventory] =
     useState<ImmutableMethodResults.ImmutableGetAssetsResult>(Object)
   const [monsterTruckInventory, setMonsterTruckInventory] =
