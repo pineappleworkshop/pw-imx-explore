@@ -5,14 +5,13 @@ import {
   ImmutableOrderStatus,
 } from '@imtbl/imx-sdk'
 import { useEffect, useState } from 'react'
-import { Typography, Box, Tab } from '@mui/material'
+import { Box, Tab } from '@mui/material'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
-import NftMarketList from './NftMarketList'
-import NftTruckMarketList from './NftTruckMarketList'
-import NftTireMarketList from './NftTireMarketList'
+
 import { useImutableXContext } from './Contexts/ImutableXContext'
+import NftList from './Components/NftList'
 require('dotenv').config()
 
 const Marketplace = () => {
@@ -22,7 +21,7 @@ const Marketplace = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
-  console.log({ client })
+
   const [marketplace, setMarketplace] =
     useState<ImmutableMethodResults.ImmutableGetOrdersResult>(Object)
   const [truckMarketplace, setTruckMarketplace] =
@@ -67,13 +66,18 @@ const Marketplace = () => {
     <Box component="div" sx={{ width: '100%', marginTop: '107px' }}>
       <TabContext value={value}>
         <Box component="div" sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs" centered>
+          <TabList
+            onChange={handleChange}
+            aria-label="lab API tabs"
+            centered
+            TabIndicatorProps={{ sx: { display: 'none' } }}
+          >
             <Tab
-              label="CARS"
+              label="Cars"
               value="1"
               style={{
-                backgroundColor: '#1B1B1B',
-                color: 'white',
+                backgroundColor: value === '1' ? '#fff' : '#1B1B1B',
+                color: value === '1' ? 'red' : 'white',
                 fontFamily: 'Bebas Neue',
                 fontSize: '24px',
                 fontWeight: '700',
@@ -82,11 +86,11 @@ const Marketplace = () => {
               }}
             />
             <Tab
-              label="MONSTER TRUCK"
+              label="Monster Truck"
               value="2"
               style={{
-                backgroundColor: '#1B1B1B',
-                color: 'white',
+                backgroundColor: value === '2' ? '#fff' : '#1B1B1B',
+                color: value === '2' ? 'red' : 'white',
                 fontFamily: 'Bebas Neue',
                 fontSize: '24px',
                 fontWeight: '700',
@@ -94,11 +98,11 @@ const Marketplace = () => {
               }}
             />
             <Tab
-              label="TIRES"
+              label="Tires"
               value="3"
               style={{
-                backgroundColor: '#1B1B1B',
-                color: 'white',
+                backgroundColor: value === '3' ? '#fff' : '#1B1B1B',
+                color: value === '3' ? 'red' : 'white',
                 fontFamily: 'Bebas Neue',
                 fontSize: '24px',
                 fontWeight: '700',
@@ -110,23 +114,7 @@ const Marketplace = () => {
         </Box>
         <TabPanel value="1">
           {marketplace?.result?.length > 0 && (
-            <Typography
-              sx={{
-                fontFamily: 'Alegreya Sans SC',
-                fontSize: '2rem',
-                color: 'red',
-              }}
-            >
-              Buy{' '}
-              {
-                JSON.parse(JSON.stringify(marketplace?.result))[0]?.sell.data
-                  .properties.collection.name
-              }{' '}
-              NFTs:
-            </Typography>
-          )}
-          {marketplace?.result?.length > 0 && (
-            <NftMarketList
+            <NftList
               nfts={JSON.parse(JSON.stringify(marketplace?.result))}
               buy={buyHandler}
               client
@@ -135,23 +123,7 @@ const Marketplace = () => {
         </TabPanel>
         <TabPanel value="2">
           {truckMarketplace?.result?.length > 0 && (
-            <Typography
-              sx={{
-                fontFamily: 'Alegreya Sans SC',
-                fontSize: '2rem',
-                color: 'red',
-              }}
-            >
-              Buy{' '}
-              {
-                JSON.parse(JSON.stringify(truckMarketplace?.result))[0]?.sell
-                  .data.properties.collection.name
-              }{' '}
-              NFTs:
-            </Typography>
-          )}
-          {truckMarketplace?.result?.length > 0 && (
-            <NftTruckMarketList
+            <NftList
               nfts={JSON.parse(JSON.stringify(truckMarketplace?.result))}
               buy={buyHandler}
               client
@@ -160,23 +132,7 @@ const Marketplace = () => {
         </TabPanel>
         <TabPanel value="3">
           {tireMarketplace?.result?.length > 0 && (
-            <Typography
-              sx={{
-                fontFamily: 'Alegreya Sans SC',
-                fontSize: '2rem',
-                color: 'red',
-              }}
-            >
-              Buy{' '}
-              {
-                JSON.parse(JSON.stringify(tireMarketplace?.result))[0]?.sell
-                  .data.properties.collection.name
-              }{' '}
-              NFTs:
-            </Typography>
-          )}
-          {tireMarketplace?.result?.length > 0 && (
-            <NftTireMarketList
+            <NftList
               nfts={JSON.parse(JSON.stringify(tireMarketplace?.result))}
               buy={buyHandler}
               client

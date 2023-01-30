@@ -1,9 +1,8 @@
 import { Box, ImageList, ImageListItem } from '@mui/material/'
-import NftMarketCard from './NftMarketCard'
-import NftCard from './Components/NftCard'
+import NftCard from './NftCard'
 // import './zillaList.css'
 
-const NftMarketList = (props) => {
+const NftList = (props) => {
   console.log({ props })
   const buyHandler = (orderId) => {
     props.buy(orderId)
@@ -11,7 +10,7 @@ const NftMarketList = (props) => {
 
   return (
     <Box minWidth={4 / 5}>
-      <ImageList cols={4} rowHeight="auto" sx={{ p: 1, pt: 1 }} gap={20}>
+      <ImageList cols={5} rowHeight="auto" sx={{ p: 1, pt: 1 }} gap={20}>
         {props?.nfts.map((nft, i) => (
           <ImageListItem key={i}>
             <NftCard
@@ -27,4 +26,4 @@ const NftMarketList = (props) => {
     </Box>
   )
 }
-export default NftMarketList
+export default NftList
