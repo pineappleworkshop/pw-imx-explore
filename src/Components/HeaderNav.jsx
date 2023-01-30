@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Button, Stack, Typography } from '@mui/material/'
 import { useImutableXContext } from '../Contexts/ImutableXContext'
 import { HiOutlineShoppingCart } from 'react-icons/hi'
+import { AiOutlinePoweroff } from 'react-icons/ai'
 import WalletInfo from './WalletInfo'
 
 const HeaderNav = () => {
@@ -48,6 +49,7 @@ const HeaderNav = () => {
               display: 'flex',
               alignItems: 'center',
               gap: '40px',
+              marginTop: '10px',
             }}
           >
             <li>
@@ -127,25 +129,32 @@ const HeaderNav = () => {
             </li>
           </ul>
         </nav>
-        {wallet && <WalletInfo />}
-
-        <Typography
-          sx={{
-            marginLeft: 'auto',
-            height: '40px',
-            fontFamily: 'Inter',
-            fontSize: '16px',
-            fontWeight: '500',
-            color: 'white',
-            cursor: 'pointer',
-            '&:hover': {
-              color: 'red',
-            },
-          }}
-          onClick={wallet ? disconnect : linkSetup}
+        <Stack
+          direction="row"
+          alignItems="center"
+          sx={{ marginLeft: 'auto', gap: '16px' }}
         >
-          {wallet ? 'Disconnect' : 'Connect'}
-        </Typography>
+          {wallet && <WalletInfo />}
+
+          <Typography
+            sx={{
+              marginLeft: 'auto',
+              height: '40px',
+              fontFamily: 'Inter',
+              fontSize: '16px',
+              fontWeight: '500',
+              color: 'white',
+              cursor: 'pointer',
+              marginTop: '10px',
+              '&:hover': {
+                color: 'red',
+              },
+            }}
+            onClick={wallet ? disconnect : linkSetup}
+          >
+            {wallet ? <AiOutlinePoweroff /> : 'Connect'}
+          </Typography>
+        </Stack>
       </Stack>
     </Stack>
   )
